@@ -1,0 +1,71 @@
+/*
+** EPITECH PROJECT, 2023
+** RPG
+** File description:
+** button
+*/
+
+#include "../include/rpg.h"
+
+button *create_button(sfVector2f position, sfVector2f size,
+sfColor *colors, char *title)
+{
+    button *new_button = malloc(sizeof(button));
+    sfIntRect *hitbox = malloc(sizeof(sfIntRect));
+    new_button->shape = sfRectangleShape_create();
+    sfRectangleShape_setPosition(new_button->shape, position);
+    sfRectangleShape_setSize(new_button->shape, size);
+    sfRectangleShape_setFillColor(new_button->shape, colors[0]);
+    sfRectangleShape_setOutlineColor(new_button->shape, colors[1]);
+    sfRectangleShape_setOutlineThickness(new_button->shape, 5);
+    hitbox->left = position.x, hitbox->top = position.y;
+    hitbox->height = size.y, hitbox->width = size.x;
+    new_button->hover_color = colors[2], new_button->click_color = colors[3];
+    new_button->color = colors[0], new_button->hitbox = hitbox;
+    sfText *but_title = button_main_text(title, position, size);
+    new_button->title = but_title;
+    new_button->is_clicked = is_clicked, new_button->is_hover = is_hovered;
+    return new_button;
+}
+
+sfBool is_clicked(button *my_button, window *my_window)
+{
+    sfVector2i mouse = sfMouse_getPositionRenderWindow(my_window->win);
+    if (sfIntRect_contains(my_button->hitbox, mouse.x, mouse.y))
+        if (sfMouse_isButtonPressed(0))
+            return sfTrue;
+    return sfFalse;
+}
+
+sfBool is_hovered(button *but, window *my_window)
+{
+    sfVector2i ms_pos = sfMouse_getPositionRenderWindow(my_window->win);
+    if (sfIntRect_contains(but->hitbox, ms_pos.x, ms_pos.y))
+        return sfTrue;
+    return sfFalse;
+}
+
+void change_color(button *butt, window *my_win)
+{
+    if (butt->state == 1)
+        sfRectangleShape_setFillColor(butt->shape,
+        butt->hover_color);
+    if (butt->state == 2)
+        sfRectangleShape_setFillColor(butt->shape,
+        butt->click_color);
+    if (butt->state == 0)
+        sfRectangleShape_setFillColor(butt->shape,
+        butt->color);
+    butt->state = 0;
+}
+
+void check_hover_and_click(button_group *group, window *my_win)
+{
+    for (int i = 0; group->button_list[i]; i++) {
+        if (group->button_list[i]->is_hover(group->button_list[i], my_win))
+            group->button_list[i]->state = 1;
+        if (group->button_list[i]->is_clicked(group->button_list[i], my_win))
+            group->button_list[i]->state = 2;
+        change_color(group->button_list[i], my_win);
+    }
+}
