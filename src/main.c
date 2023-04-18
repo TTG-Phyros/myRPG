@@ -21,10 +21,12 @@ window *create_window(int width, int height, char *title, int framerate)
     return new_window;
 }
 
-void close_event(sfRenderWindow *window, sfEvent event)
+void check_event(window *my_win, sfEvent event, button_group *group)
 {
     if (event.type == sfEvtClosed)
-        sfRenderWindow_close(window);
+        sfRenderWindow_close(my_win->win);
+    if (event.type == sfEvtResized)
+        fix_resize(group, my_win);
 }
 
 sfSprite *set_sprite(char *filepath, float pos[2][2])
@@ -51,7 +53,8 @@ void main_menu(window *my_win)
     button_group *main_group = set_main_button_group(my_win);
     while (sfRenderWindow_isOpen(my_win->win)) {
         while (sfRenderWindow_pollEvent(my_win->win, &event))
-            close_event(my_win->win, event);
+            check_event(my_win, event, main_group);
+        redirect_main_check(main_group, my_win);
         check_hover_and_click(main_group, my_win);
         sfRenderWindow_clear(my_win->win, sfBlack);
         sfRenderWindow_drawSprite(my_win->win, main_back, NULL);
