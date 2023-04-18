@@ -18,6 +18,8 @@ window *create_window(int width, int height, char *title, int framerate)
     window = sfRenderWindow_create(mode, title, sfResize | sfClose, NULL);
     sfRenderWindow_setKeyRepeatEnabled(window, sfFalse);
     new_window->win = window;
+    new_window->title = title;
+    new_window->volume = 50;
     return new_window;
 }
 
@@ -54,6 +56,7 @@ void main_menu(window *my_win)
     while (sfRenderWindow_isOpen(my_win->win)) {
         while (sfRenderWindow_pollEvent(my_win->win, &event))
             check_event(my_win, event, main_group);
+        if (sfKeyboard_isKeyPressed(sfKeyEscape)) return;
         redirect_main_check(main_group, my_win);
         check_hover_and_click(main_group, my_win);
         sfRenderWindow_clear(my_win->win, sfBlack);

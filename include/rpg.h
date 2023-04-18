@@ -39,8 +39,9 @@
 
     typedef struct window window;
     struct window {
-        int width, height, framerate;
+        int width, height, framerate, volume;
         char *title;
+        sfBool fullscreen;
         sfVideoMode mode;
         sfRenderWindow *win;
     };
@@ -48,7 +49,8 @@
     typedef struct settings settings;
     struct settings {
         sfText **names;
-        int volume, width, height;
+        int volume, selected_res;
+        char **resolutions;
         sfBool fullscreen;
         sfRectangleShape *check_box, *cross_o, *cross_t;
     };
@@ -56,6 +58,7 @@
     typedef struct button button;
     struct button {
         sfVector2f size, pos;
+        int times_clicked;
         char *button_id;
         sfIntRect *hitbox;
         sfRectangleShape *shape;
@@ -104,6 +107,8 @@
     // * more_str_related.c
     int my_strlen(char const *str);
     int my_intlen(int nb);
+    int char_to_int(char *str);
+    char *int_to_str(int nb);
 
     // * settings.c
     void settings_menu(window *my_win);
@@ -111,6 +116,7 @@
     // * settings_button_group.c
     button_group *set_settings_button_group(window *my_win);
     void settings_names(window *my_win, settings *my_setts);
+    void settings_redirections(button_group *settings_group, settings *my_setts, window *my_win);
 
     // * text_related.c
     sfText *main_text(window *my_win);

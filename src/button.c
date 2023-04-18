@@ -24,7 +24,7 @@ button *create_button(sfVector2f * pos_scale, sfColor *colors,
     new_button->hover_color = colors[2], new_button->click_color = colors[3];
     new_button->color = colors[0], new_button->hitbox = hitbox;
     sfText *but_title = button_main_text(title, pos_scale, char_size);
-    new_button->title = but_title;
+    new_button->title = but_title, new_button->times_clicked = 0;
     new_button->is_clicked = is_clicked, new_button->is_hover = is_hovered;
     return new_button;
 }
@@ -33,8 +33,11 @@ sfBool is_clicked(button *my_button, window *my_window)
 {
     sfVector2i mouse = sfMouse_getPositionRenderWindow(my_window->win);
     if (sfIntRect_contains(my_button->hitbox, mouse.x, mouse.y))
-        if (sfMouse_isButtonPressed(0))
+        if (sfMouse_isButtonPressed(0)) {
+            my_button->state = 2, my_button->times_clicked++;
             return sfTrue;
+        }
+        my_button->times_clicked = 0;
     return sfFalse;
 }
 
@@ -43,6 +46,7 @@ sfBool is_hovered(button *but, window *my_window)
     sfVector2i ms_pos = sfMouse_getPositionRenderWindow(my_window->win);
     if (sfIntRect_contains(but->hitbox, ms_pos.x, ms_pos.y))
         return sfTrue;
+    but->state = 0;
     return sfFalse;
 }
 

@@ -24,10 +24,8 @@ button_group *set_main_button_group(window *my_win)
     sfVector2f pos = {my_win->width / 2 - scale.x / 2, my_win->height / 2.75};
     sfVector2f *pos_scale = malloc(sizeof(sfVector2f) * 2);
     pos_scale[0] = pos, pos_scale[1] = scale;
-    sfColor * colors = malloc(3 * sizeof(sfColor));
-    colors[0] = sfDarkGrey;
-    colors[1] = sfBlack;
-    colors[2] = sfGrey;
+    sfColor *colors = malloc(4 * sizeof(sfColor));
+    colors[0] = sfDarkGrey, colors[1] = sfBlack, colors[2] = sfGrey;
     colors[3] = sfLightGrey;
     button_list[0] = create_button(pos_scale, colors, "Play", 75);
     pos_scale[0].y += my_win->height / 7.2;
@@ -74,10 +72,7 @@ void redirect_main_check_sec(int i, window *my_win)
 void redirect_main_check(button_group *group, window *my_win)
 {
     for (int i = 0; group->button_list[i]; i++) {
-        if(group->button_list[i]->state == 2) {
-            group->button_list[i]->state = 0;
+        if (group->button_list[i]->state == 2)
             redirect_main_check_sec(i, my_win);
-        }
-        group->button_list[i]->state = 0;
     }
 }
