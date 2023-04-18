@@ -25,10 +25,12 @@ int back_check(button_group *settings_group, window *my_win)
 
 void settings_menu(window *my_win)
 {
-    sfEvent event;
+    sfEvent event; struct main_music music;
     float height = my_win->height / (double)1080;
     float width = my_win->width / (double)1920;
     float pos_scale_back[2][2] = {{0, 0}, {width, height}};
+    int volume = my_win->volume;
+    sfMusic_setVolume(music.music, volume);
     sfSprite *set_back = set_sprite(settings_back, pos_scale_back);
     sfText *settings_title = settings_text(my_win);
     settings *my_setts = malloc(sizeof(settings));

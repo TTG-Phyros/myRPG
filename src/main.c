@@ -44,7 +44,7 @@ sfSprite *set_sprite(char *filepath, float pos[2][2])
     return sprite;
 }
 
-void main_menu(window *my_win)
+void main_menu(struct main_music music, window *my_win)
 {
     sfEvent event;
     float height = my_win->height / (double)1080;
@@ -53,7 +53,11 @@ void main_menu(window *my_win)
     sfSprite *main_back = set_sprite(back_main, pos_scale_back);
     sfText *main_title = main_text(my_win);
     button_group *main_group = set_main_button_group(my_win);
+    sfMusic_setLoop(music.music, sfTrue);
+    sfMusic_play(music.music);
     while (sfRenderWindow_isOpen(my_win->win)) {
+        int volume = my_win->volume;
+        sfMusic_setVolume(music.music, volume);
         while (sfRenderWindow_pollEvent(my_win->win, &event))
             check_event(my_win, event, main_group);
         if (sfKeyboard_isKeyPressed(sfKeyEscape)) return;
@@ -67,8 +71,16 @@ void main_menu(window *my_win)
     }
 }
 
-void main(void)
+int main(int ac, char **av)
 {
+    struct main_music music;
+    if (ac == 2 && av[1][0] == '-' && av[1][1] == 'h') {
+        my_putstr("\n- RPG -\n\n");
+        my_putstr(" Role Play Game\n");
+        my_putstr(" Le vieux vous expliqueras tout.\n\n");
+        return (0);
+    }
+    music.music = sfMusic_createFromFile("content/Soundtrack.ogg"); 
     window *my_win = create_window(1920, 1080, "My RPG", 60);
-    main_menu(my_win);
+    main_menu(music, my_win);
 }

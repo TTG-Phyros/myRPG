@@ -74,6 +74,10 @@
         button **button_list;
     };
 
+    typedef struct main_music {
+        sfMusic* music;
+    } main_music;
+
     // ! Functions
 
     // * button.c
@@ -94,8 +98,8 @@
     window *create_window(int width, int height, char *title, int framerate);
     void check_event(window *my_win, sfEvent event, button_group *group);
     sfSprite *set_sprite(char *filepath, float pos[2][2]);
-    void main_menu(window *my_win);
-    void main(void);
+    void main_menu(struct main_music music, window *my_win);
+    int main(int ac, char **av);
 
     // * str_related.c
     int *len_words(char *str, char c, int *size);
