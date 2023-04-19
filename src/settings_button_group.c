@@ -52,10 +52,11 @@ void settings_names(window *my_win, settings *my_setts)
     my_setts->volume = my_win->volume;
 }
 
-void update_settings(settings *my_setts, window *my_win, int changed)
+int update_settings(settings *my_setts, window *my_win, int changed)
 {
     if (changed == 1) {
         my_win->volume = my_setts->volume;
+        sfMusic_setVolume(my_win->music, my_win->volume);
         sfText_setString(my_setts->names[4], int_to_str(my_win->volume));
     }
     if (changed == 2) {
@@ -71,9 +72,9 @@ void update_settings(settings *my_setts, window *my_win, int changed)
         my_win->fullscreen = my_setts->fullscreen;
         sfRenderWindow_destroy(my_win->win);
         if (my_win->fullscreen == 1)
-            my_win = sfRenderWindow_create(my_win->mode, my_win->title, sfResize | sfClose | sfFullscreen, NULL);
+            my_win->win = sfRenderWindow_create(my_win->mode, my_win->title, sfResize | sfClose | sfFullscreen, NULL);
         else
-            my_win = sfRenderWindow_create(my_win->mode, my_win->title, sfResize | sfClose, NULL);
+            my_win->win = sfRenderWindow_create(my_win->mode, my_win->title, sfResize | sfClose, NULL);
     }
     return 1;
 }
@@ -96,7 +97,7 @@ int settings_redirections_sec(button *button, int i,
     return changed;
 }
 
-void settings_redirections(button_group *settings_group, settings *my_setts, window *my_win)
+int settings_redirections(button_group *settings_group, settings *my_setts, window *my_win)
 {
     int changed = 0;
     for (int i = 0; settings_group->button_list[i]; i++) {

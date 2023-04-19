@@ -44,6 +44,7 @@
         sfBool fullscreen;
         sfVideoMode mode;
         sfRenderWindow *win;
+        sfMusic *music;
     };
 
     typedef struct settings settings;
@@ -74,10 +75,6 @@
         button **button_list;
     };
 
-    typedef struct main_music {
-        sfMusic* music;
-    } main_music;
-
     // ! Functions
 
     // * button.c
@@ -98,7 +95,7 @@
     window *create_window(int width, int height, char *title, int framerate);
     void check_event(window *my_win, sfEvent event, button_group *group);
     sfSprite *set_sprite(char *filepath, float pos[2][2]);
-    void main_menu(struct main_music music, window *my_win);
+    void main_menu(window *my_win);
     int main(int ac, char **av);
 
     // * str_related.c
@@ -120,7 +117,7 @@
     // * settings_button_group.c
     button_group *set_settings_button_group(window *my_win);
     void settings_names(window *my_win, settings *my_setts);
-    void settings_redirections(button_group *settings_group, settings *my_setts, window *my_win);
+    int settings_redirections(button_group *settings_group, settings *my_setts, window *my_win);
 
     // * text_related.c
     sfText *main_text(window *my_win);
