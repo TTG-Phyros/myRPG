@@ -7,7 +7,7 @@
 
 #include "../include/rpg.h"
 
-button *create_button(sfVector2f * pos_scale, sfColor *colors,
+button *c_button(sfVector2f * pos_scale, sfColor *colors,
                     char *title, int char_size)
 {
     button *new_button = malloc(sizeof(button));

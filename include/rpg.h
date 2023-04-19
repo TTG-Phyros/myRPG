@@ -15,6 +15,7 @@
         #include <SFML/Audio.h>
         #include <math.h>
         #include <stdlib.h>
+        #include <unistd.h>
 
     // ! MACROS
         #define IS_HOVERED(button) button->state == 1 ? sfTrue : sfFalse
@@ -39,7 +40,7 @@
 
     typedef struct window window;
     struct window {
-        int width, height, framerate, volume;
+        int width, height, framerate, volume, selected_res;
         char *title;
         sfBool fullscreen;
         sfVideoMode mode;
@@ -78,7 +79,7 @@
     // ! Functions
 
     // * button.c
-    button *create_button(sfVector2f *pos_scale, sfColor *colors,
+    button *c_button(sfVector2f *pos_scale, sfColor *colors,
     char *title, int char_size);
     sfBool is_clicked(button *my_button, window *my_window);
     sfBool is_hovered(button *but, window *my_window);
@@ -89,13 +90,14 @@
     void draw_button_group(button_group *group, window *my_win);
     button_group *set_main_button_group(window *my_win);
     void fix_resize(button_group *group, window *my_win);
-    void redirect_main_check(button_group *group, window *my_win);
+    int redirect_main_check_sec(int i, window *my_win);
+    int redirect_main_check(button_group *group, window *my_win);
 
     // * main.c
     window *create_window(int width, int height, char *title, int framerate);
     void check_event(window *my_win, sfEvent event, button_group *group);
     sfSprite *set_sprite(char *filepath, float pos[2][2]);
-    void main_menu(window *my_win);
+    int main_menu(window *my_win);
     int main(int ac, char **av);
 
     // * str_related.c
@@ -110,14 +112,16 @@
     int my_intlen(int nb);
     int char_to_int(char *str);
     char *int_to_str(int nb);
+    int my_putstr(char const *str);
 
     // * settings.c
-    void settings_menu(window *my_win);
+    int settings_menu(window *my_win);
 
     // * settings_button_group.c
     button_group *set_settings_button_group(window *my_win);
-    void settings_names(window *my_win, settings *my_setts);
-    int settings_redirections(button_group *settings_group, settings *my_setts, window *my_win);
+    settings *settings_names(window *my_win);
+    int settings_redirections(button_group *settings_group,
+                            settings *my_setts, window *my_win);
 
     // * text_related.c
     sfText *main_text(window *my_win);

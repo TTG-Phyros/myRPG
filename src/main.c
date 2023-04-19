@@ -20,6 +20,7 @@ window *create_window(int width, int height, char *title, int framerate)
     new_window->win = window;
     new_window->title = title;
     new_window->volume = 50;
+    new_window->selected_res = 1;
     return new_window;
 }
 
@@ -44,20 +45,20 @@ sfSprite *set_sprite(char *filepath, float pos[2][2])
     return sprite;
 }
 
-void main_menu(window *my_win)
+int main_menu(window *my_win)
 {
     sfEvent event;
-    float height = my_win->height / (double)1080;
-    float width = my_win->width / (double)1920;
-    float pos_scale_back[2][2] = {{0, 0}, {width, height}};
+    int temp = 0;
+    float pos_scale_back[2][2] = {{0, 0}, {1, 1}};
     sfSprite *main_back = set_sprite(back_main, pos_scale_back);
     sfText *main_title = main_text(my_win);
     button_group *main_group = set_main_button_group(my_win);
     while (sfRenderWindow_isOpen(my_win->win)) {
         while (sfRenderWindow_pollEvent(my_win->win, &event))
             check_event(my_win, event, main_group);
-        if (sfKeyboard_isKeyPressed(sfKeyEscape)) return;
-        redirect_main_check(main_group, my_win);
+        if (sfKeyboard_isKeyPressed(sfKeyEscape)) return 0;
+        if ((temp = redirect_main_check(main_group, my_win)) != -1)
+            return redirect_main_check_sec(temp, my_win);
         check_hover_and_click(main_group, my_win);
         sfRenderWindow_clear(my_win->win, sfBlack);
         sfRenderWindow_drawSprite(my_win->win, main_back, NULL);
@@ -65,6 +66,7 @@ void main_menu(window *my_win)
         sfRenderWindow_drawText(my_win->win, main_title, NULL);
         sfRenderWindow_display(my_win->win);
     }
+    return 0;
 }
 
 int main(int ac, char **av)
@@ -76,7 +78,7 @@ int main(int ac, char **av)
         return (0);
     }
     window *my_win = create_window(1920, 1080, "My RPG", 60);
-    my_win->music = sfMusic_createFromFile("content/Soundtrack.ogg"); 
+    my_win->music = sfMusic_createFromFile("content/Soundtrack.ogg");
     sfMusic_setLoop(my_win->music, sfTrue);
     sfMusic_setVolume(my_win->music, 50);
     sfMusic_play(my_win->music);

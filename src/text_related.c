@@ -39,7 +39,8 @@ sfText *settings_text(window *my_win)
     return text;
 }
 
-sfText *button_settings_text(window *my_win, sfVector2f pos, char *title, int size)
+sfText *button_settings_text(window *my_win, sfVector2f pos,
+                            char *title, int size)
 {
     sfText *text = sfText_create();
     sfFont *font = sfFont_createFromFile(main_font);

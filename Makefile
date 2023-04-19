@@ -15,8 +15,6 @@ SRC				=		./src/main.c					\
 						./src/str_related.c				\
 						./src/text_related.c			\
 						./src/settings.c				\
-						./src/play.c					\
-						./src/fonction/my_putstr.c		\
 
 OBJ				=				$(SRC:.c=.o)
 
