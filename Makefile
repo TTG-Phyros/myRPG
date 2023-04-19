@@ -15,6 +15,7 @@ SRC				=		./src/main.c					\
 						./src/str_related.c				\
 						./src/text_related.c			\
 						./src/settings.c				\
+						./src/particle.c				\
 
 OBJ				=				$(SRC:.c=.o)
 

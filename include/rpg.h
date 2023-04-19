@@ -24,6 +24,7 @@
         #define main_font "./content/main_font.otf"
         #define back_main "./content/zelda_main.png"
         #define settings_back "./content/settings_back.png"
+        #define sprite_sheet "./content/spritesheet.png"
         #define sfOrange sfColor_fromRGB(255, 128, 0)
         #define sfGrey sfColor_fromRGB(100, 100, 100)
         #define sfLightGrey sfColor_fromRGB(160, 160, 160)
@@ -74,6 +75,14 @@
     typedef struct button_group button_group;
     struct button_group {
         button **button_list;
+    };
+
+    typedef struct animation animation;
+    struct animation {
+        sfVector2f position, scale;
+        int *pos_ss, *size, *spacing, nb_frames;
+        char *filepath_ss;
+        sfSprite **animations;
     };
 
     // ! Functions
