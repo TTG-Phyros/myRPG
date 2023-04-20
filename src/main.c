@@ -77,7 +77,7 @@ int main(int ac, char **av)
         my_putstr(" Le vieux vous expliqueras tout.\n\n");
         return (0);
     }
-    window *my_win = create_window(1920, 1080, "My RPG", 60);
+    window *my_win = create_window(1920, 1080, "ZelDouille", 60);
     my_win->music = sfMusic_createFromFile("content/Soundtrack.ogg");
     sfMusic_setLoop(my_win->music, sfTrue);
     sfMusic_setVolume(my_win->music, 50);

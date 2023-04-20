@@ -12,7 +12,7 @@ sfText *main_text(window *my_win)
     sfText *text = sfText_create();
     sfFont *font = sfFont_createFromFile(main_font);
     sfText_setFont(text, font);
-    sfText_setString(text, "My_RPG");
+    sfText_setString(text, my_win->title);
     sfText_setCharacterSize(text, my_win->width / 9.6);
     sfText_setColor(text, sfDarkGrey);
     sfText_setOutlineColor(text, sfBlack);

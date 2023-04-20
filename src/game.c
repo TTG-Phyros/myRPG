@@ -12,7 +12,6 @@ int play(window *my_win) {
 
     sfEvent event;
     sfVideoMode mode = {1600, 900, 32};
-    sfRenderWindow* window = my_win->win;
 
     // load the image from file
     sfImage *image = sfImage_createFromFile(zelda_map);
@@ -70,7 +69,7 @@ int play(window *my_win) {
     sfSprite_setPosition(hammer, hammer_pos);
     sfSprite_setPosition(dragon, dragon_pos);
 
-    // create a view with the same size as the window
+    // create a view with the same size as the my_win->win
     sfFloatRect view_rect = {50.f - (152.3961f * 1.6 / 2), 440.f - (100.f * 1.6 / 2), 152.3961f * 1.6, 100.f * 1.6};
     sfView* view = sfView_createFromRect(view_rect);
 
@@ -84,11 +83,11 @@ int play(window *my_win) {
     int is_dialogue = 0;
     int dialogue_option = 0;
 
-    while (sfRenderWindow_isOpen(window)) {
+    while (sfRenderWindow_isOpen(my_win->win)) {
         sfEvent event;
-        while (sfRenderWindow_pollEvent(window, &event)) {
+        while (sfRenderWindow_pollEvent(my_win->win, &event)) {
             if (event.type == sfEvtClosed) {
-                sfRenderWindow_close(window);
+                sfRenderWindow_close(my_win->win);
             }
         }
         // handle keyboard input and animate the zelda
@@ -174,12 +173,12 @@ int play(window *my_win) {
             }
             // while (temp_wall.g != 254) {
             //     //? start conversation for quest
-            //     sfRenderWindow_drawSprite(window, dialogue, NULL);
+            //     sfRenderWindow_drawSprite(my_win->win, dialogue, NULL);
             //     quest_counter = 1;
             //     sfSleep(sfSeconds(1));
                 
             //     if (quest_counter == 1 && sfKeyboard_isKeyPressed(sfKeySpace)) {
-            //         sfRenderWindow_drawSprite(window, dialogue, NULL);
+            //         sfRenderWindow_drawSprite(my_win->win, dialogue, NULL);
             //         sfSleep(sfSeconds(1));
             //         temp_wall.g = 253;
             //     }
@@ -188,7 +187,7 @@ int play(window *my_win) {
             // }
         }
 
-        while (sfRenderWindow_pollEvent(window, &event)) {
+        while (sfRenderWindow_pollEvent(my_win->win, &event)) {
 
             if (event.type == sfEvtMouseWheelMoved) {
             
@@ -214,23 +213,26 @@ int play(window *my_win) {
 
 
 
-        // set the view to the window
-        sfRenderWindow_setView(window, view);
+        // set the view to the my_win->win
+        sfRenderWindow_setView(my_win->win, view);
 
         // draw the sprite to the screen
-        sfRenderWindow_clear(window, sfBlack);
-        sfRenderWindow_drawSprite(window, map, NULL);
+        sfRenderWindow_clear(my_win->win, sfBlack);
+        sfRenderWindow_drawSprite(my_win->win, map, NULL);
         if (is_dialogue)
-            sfRenderWindow_drawSprite(window, dialogue, NULL);
-        sfRenderWindow_drawSprite(window, zelda, NULL);
-        sfRenderWindow_drawSprite(window, hammer, NULL);
-        sfRenderWindow_drawSprite(window, sword, NULL);
-        sfRenderWindow_drawSprite(window, dragon, NULL);
+            sfRenderWindow_drawSprite(my_win->win, dialogue, NULL);
+        sfRenderWindow_drawSprite(my_win->win, zelda, NULL);
+        sfRenderWindow_drawSprite(my_win->win, hammer, NULL);
+        sfRenderWindow_drawSprite(my_win->win, sword, NULL);
+        sfRenderWindow_drawSprite(my_win->win, dragon, NULL);
         
-        sfRenderWindow_display(window);
+        sfRenderWindow_display(my_win->win);
 
         if (sfKeyboard_isKeyPressed(sfKeyEscape)) {
-            break;
+            sfFloatRect view_rect_reset = {0, 0, 1920, 1080};
+            sfView *view_reset = sfView_createFromRect(view_rect_reset);
+            sfRenderWindow_setView(my_win->win, view_reset);
+            return main_menu(my_win);
         }
     }
     // clean up resources
@@ -238,7 +240,7 @@ int play(window *my_win) {
     sfTexture_destroy(texture);
     sfImage_destroy(image);
     sfView_destroy(view);
-    sfRenderWindow_destroy(window);
+    sfRenderWindow_destroy(my_win->win);
 
     return 0;
 }
