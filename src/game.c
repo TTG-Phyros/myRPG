@@ -7,11 +7,66 @@
 
 #include "../include/rpg.h"
 
+/*void movement()
+{
+    if (sfKeyboard_isKeyPressed(sfKeyRight)) {
+        temp_wall = sfImage_getPixel(walls, zelda_pos.x + 20, zelda_pos.y + 13);
+        if (temp_wall.g != 255) {
+            movement.x += 1.f * temp_time;
+            zelda_pos.x += 1.f * temp_time;
+            if (counter % 100 < 50) {
+                textureRect.left = 77;
+            } else {
+                textureRect.left = 96;
+            }
+            is_dialogue = 0;
+        }
+    }
+    if (sfKeyboard_isKeyPressed(sfKeyLeft)) {
+        temp_wall = sfImage_getPixel(walls, zelda_pos.x - 5, zelda_pos.y + 13);
+        if (temp_wall.g != 255) {
+            movement.x -= 1.f * temp_time;
+            zelda_pos.x -= 1.f * temp_time;
+            if (counter % 100 < 50) {
+                textureRect.left = 115;
+            } else {
+                textureRect.left = 134;
+            }
+            is_dialogue = 0;
+        }
+    }
+    if (sfKeyboard_isKeyPressed(sfKeyDown)) {
+        temp_wall = sfImage_getPixel(walls, zelda_pos.x + 8, zelda_pos.y + 25);
+        if (temp_wall.g != 255) {
+            movement.y += 1.f * temp_time;
+            zelda_pos.y += 1.f * temp_time;
+            if (counter % 100 < 50) {
+                textureRect.left = 1;
+            } else {
+                textureRect.left = 20;
+            }
+            is_dialogue = 0;
+        }
+    }
+    if (sfKeyboard_isKeyPressed(sfKeyUp)) {
+        temp_wall = sfImage_getPixel(walls, zelda_pos.x + 8, zelda_pos.y);
+        if (temp_wall.g != 255) {
+            movement.y -= 1.f * temp_time;
+            zelda_pos.y -= 1.f * temp_time;
+            if (counter % 100 < 50) {
+                textureRect.left = 39;
+            } else {
+                textureRect.left = 58;
+            }
+            is_dialogue = 0;
+        }
+    }
+}*/
+
 int play(window *my_win) {
 
 
     sfEvent event;
-    sfVideoMode mode = {1600, 900, 32};
 
     // load the image from file
     sfImage *image = sfImage_createFromFile(zelda_map);
