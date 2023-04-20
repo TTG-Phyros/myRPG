@@ -25,6 +25,8 @@
         #define back_main "./content/zelda_main.png"
         #define settings_back "./content/settings_back.png"
         #define sprite_sheet "./content/spritesheet.png"
+        #define zelda_map "./content/map_zelda.png"
+        #define wall_map "./content/wall_map.png"
         #define sfOrange sfColor_fromRGB(255, 128, 0)
         #define sfGrey sfColor_fromRGB(100, 100, 100)
         #define sfLightGrey sfColor_fromRGB(160, 160, 160)
@@ -83,6 +85,7 @@
         int *pos_ss, *size, *spacing, nb_frames;
         char *filepath_ss;
         sfSprite **animations;
+        sfClock *clock;
     };
 
     // ! Functions
@@ -139,5 +142,8 @@
                             int char_size);
     sfText *button_settings_text(window *my_win, sfVector2f pos, char *title,
     int size);
+
+    // * play.c
+    int play(window *my_win);
 
 #endif

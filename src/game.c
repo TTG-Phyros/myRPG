@@ -1,60 +1,26 @@
 /*
 ** EPITECH PROJECT, 2023
-** B-MUL-200-MAR-2-1-mypaint-anaelle.urbon
+** B-MUL-200-MAR-2-1-myrpg-baptiste.mery
 ** File description:
-** main
+** game
 */
 
-#include "my.h"
+#include "../include/rpg.h"
 
-button_s *create_rectangle(all_s *all, button_s * button)
-{
-    button->forme = sfRectangleShape_create();
-    sfRectangleShape_setPosition(button->forme, button->pos);
-    sfRectangleShape_setSize(button->forme, button->size);
-    sfRectangleShape_setFillColor(button->forme, sfTransparent);
-    sfRectangleShape_setOutlineThickness(button->forme, 3);
-    sfRectangleShape_setOutlineColor(button->forme, button->color);
-    return (button);
-}
-
-void create_text(all_s *all, char *text)
-{
-    all->but->text = sfText_create();
-    sfFont *font = sfFont_createFromFile("font/OpenSans.ttf");
-    sfText_setFont(all->but->text, font);
-    sfText_setString(all->but->text, text);
-    sfText_setCharacterSize(all->but->text, 12);
-    sfText_setColor(all->but->text, all->but->color);
-    sfText_setPosition(all->but->text, all->but->pos);
-}
-
-void create_test(all_s *all)
-{
-    all->but->test = sfRectangleShape_create();
-    sfRectangleShape_setPosition(all->but->test, all->but->pos);
-    sfRectangleShape_setSize(all->but->test, all->but->size);
-    sfRectangleShape_setFillColor(all->but->test, sfRed);
-    sfRectangleShape_setOutlineColor(all->but->test, all->but->color);
-}
-
-int main() {
+int play(window *my_win) {
 
 
     sfEvent event;
-    all_s *all = init_all();
-
     sfVideoMode mode = {1600, 900, 32};
-    sfRenderWindow* window = sfRenderWindow_create(mode, "RPG     >:]", sfClose, NULL);
-    sfRenderWindow_setFramerateLimit(window, 60);
+    sfRenderWindow* window = my_win->win;
 
     // load the image from file
-    sfImage* image = sfImage_createFromFile("src/map_zelda3.png");
-    sfImage* sheet = sfImage_createFromFile("src/zelda_sheet2.png");
-    sfImage* walls = sfImage_createFromFile("src/wall_map7.png");
-    sfImage* dialogue_image = sfImage_createFromFile("src/random_music_wallpaper.jpg");
-    sfImage* dialogue_image1 = sfImage_createFromFile("src/random_music_wallpaper.jpg");//?make these the different dialogs
-    sfImage* dialogue_image2 = sfImage_createFromFile("src/random_music_wallpaper.jpg");
+    sfImage *image = sfImage_createFromFile(zelda_map);
+    sfImage *sheet = sfImage_createFromFile(sprite_sheet);
+    sfImage *walls = sfImage_createFromFile(wall_map);
+    sfImage* dialogue_image = sfImage_createFromFile("./content/random_music_wallpaper.jpg");
+    sfImage* dialogue_image1 = sfImage_createFromFile("./content/random_music_wallpaper.jpg");//?make these the different dialogs
+    sfImage* dialogue_image2 = sfImage_createFromFile("./content/random_music_wallpaper.jpg");
 
     // create a texture from the image
     sfTexture* texture = sfTexture_createFromImage(image, NULL);
@@ -91,7 +57,7 @@ int main() {
     sfSprite_setTextureRect(hammer, textureRect3);
 
     // modify the size of zelda
-    sfVector2f scale = { 1.f, 1.f };
+    sfVector2f scale = { 0.8f, 0.8f };
     sfSprite_setScale(zelda, scale);
 
     //set positions of the items
@@ -120,26 +86,25 @@ int main() {
 
     while (sfRenderWindow_isOpen(window)) {
         sfEvent event;
-        /*while (sfRenderWindow_pollEvent(window, &event)) {
+        while (sfRenderWindow_pollEvent(window, &event)) {
             if (event.type == sfEvtClosed) {
                 sfRenderWindow_close(window);
             }
-        }*/
+        }
         // handle keyboard input and animate the zelda
         counter++;
         sfVector2f movement = {0.f, 0.f};
         time = sfClock_getElapsedTime(clock);
-        temp_time = sfTime_asSeconds(time) * 200; //? this is the speed
+        temp_time = sfTime_asSeconds(time) * 100; //? this is the speed
         sfClock_restart(clock);
-
-
-        my_putstr("start, ");
+        
+        
         if (sfKeyboard_isKeyPressed(sfKeyRight)) {
             temp_wall = sfImage_getPixel(walls, zelda_pos.x + 20, zelda_pos.y + 13);
             if (temp_wall.g != 255) {
                 movement.x += 1.f * temp_time;
                 zelda_pos.x += 1.f * temp_time;
-                if (counter % 10 < 5) {
+                if (counter % 100 < 50) {
                     textureRect.left = 77;
                 } else {
                     textureRect.left = 96;
@@ -152,7 +117,7 @@ int main() {
             if (temp_wall.g != 255) {
                 movement.x -= 1.f * temp_time;
                 zelda_pos.x -= 1.f * temp_time;
-                if (counter % 10 < 5) {
+                if (counter % 100 < 50) {
                     textureRect.left = 115;
                 } else {
                     textureRect.left = 134;
@@ -165,7 +130,7 @@ int main() {
             if (temp_wall.g != 255) {
                 movement.y += 1.f * temp_time;
                 zelda_pos.y += 1.f * temp_time;
-                if (counter % 10 < 5) {
+                if (counter % 100 < 50) {
                     textureRect.left = 1;
                 } else {
                     textureRect.left = 20;
@@ -178,7 +143,7 @@ int main() {
             if (temp_wall.g != 255) {
                 movement.y -= 1.f * temp_time;
                 zelda_pos.y -= 1.f * temp_time;
-                if (counter % 10 < 5) {
+                if (counter % 100 < 50) {
                     textureRect.left = 39;
                 } else {
                     textureRect.left = 58;
@@ -277,21 +242,3 @@ int main() {
 
     return 0;
 }
-
-/*
-    sfEvent event; all_s *all = init_all();
-    
-    all->texture = sfTexture_createFromImage(all->image, NULL);
-    all->sprite = sfSprite_create();
-    all->sprite_pos.x = 0.0; all->sprite_pos.y = 0.0;
-    while (sfRenderWindow_isOpen(all->wdw)) {
-        while (sfRenderWindow_pollEvent(all->wdw, &event)) {
-            conditions_event(event, all);
-        }
-        update_all(all);
-        display_all(all);
-        if (sfKeyboard_isKeyPressed(sfKeyEscape)) {
-            break;
-        }
-    } return (0);
-    */

@@ -16,6 +16,7 @@ SRC				=		./src/main.c					\
 						./src/text_related.c			\
 						./src/settings.c				\
 						./src/particle.c				\
+						./src/game.c					\
 
 OBJ				=				$(SRC:.c=.o)
 

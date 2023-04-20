@@ -57,7 +57,7 @@ void fix_resize(button_group *grp, window *my_win)
 int redirect_main_check_sec(int i, window *my_win)
 {
     if (i == 0)
-        printf("Play\n");
+        play(my_win);
     if (i == 1)
         printf("Resume\n");
     if (i == 2)
