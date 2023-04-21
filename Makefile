@@ -1,31 +1,25 @@
 ##
-## EPITECH PROJECT, 2023
-## RPG
-## File description:
+## EPITECH PROJECT, 2022
 ## Makefile
+## File description:
+## Compile the whole project
 ##
 
-NAME			=				my_rpg
+NAME		=		my_rpg
 
-SRC				=		./src/main.c					\
-						./src/button.c					\
-						./src/main_button_group.c		\
-						./src/settings_button_group.c	\
-						./src/more_str_related.c		\
-						./src/str_related.c				\
-						./src/text_related.c			\
-						./src/settings.c				\
-						./src/particle.c				\
-						./src/game.c					\
+##CFLAGS		=		-W -Wall -Werror
 
-OBJ				=				$(SRC:.c=.o)
+SRC		=		my_hunter.c		\
+				my_hunter2.c	\
+				my_hunter3.c	\
+				my_hunter4.c	\
 
-CSFML	=		-lcsfml-graphics -lcsfml-system -lcsfml-audio -lcsfml-window
+OBJ		=		$(SRC:.c=.o)
 
-MATH 	=		-lm
+CSFML	=	-lcsfml-graphics -lcsfml-system -lcsfml-audio -lcsfml-window
 
 all:	$(OBJ)
-		gcc $(OBJ) -o $(NAME) $(CFLAGS) $(CSFML) $(MATH) -g3
+		gcc  $(SRC) -o $(NAME) $(CSFML)
 
 clean:
 		rm -f $(OBJ)
