@@ -10,7 +10,8 @@
 sfSprite* bc_figh(void)
 {
     sfVector2f scale_duck = {1, 1};
-    sfTexture *texture3 = sfTexture_createFromFile("./img/bcfight.png", NULL);
+    sfTexture *texture3 =
+    sfTexture_createFromFile("./img/bcfight.png", NULL);
     sfSprite *duck1 = sfSprite_create();
     sfSprite_setTexture(duck1, texture3, sfTrue);
     sfSprite_setScale(duck1, scale_duck);
@@ -26,7 +27,8 @@ sfSprite* sword(void)
     rect->top = ss[0][1];
     rect->width = ss[1][0];
     rect->height = ss[1][1];
-    sfTexture *texture2 = sfTexture_createFromFile("./img/spriteshit.png", rect);
+    sfTexture *texture2 =
+    sfTexture_createFromFile("./img/spriteshit.png", rect);
     sfSprite *duck1 = sfSprite_create();
     sfSprite_setTexture(duck1, texture2, sfTrue);
     sfSprite_setScale(duck1, scale_duck);
@@ -42,7 +44,8 @@ sfSprite* monstre(void)
     rect->top = ss[0][1];
     rect->width = ss[1][0];
     rect->height = ss[1][1];
-    sfTexture *texture2 = sfTexture_createFromFile("./img/spriteshit.png", rect);
+    sfTexture *texture2 =
+    sfTexture_createFromFile("./img/spriteshit.png", rect);
     sfSprite *duck1 = sfSprite_create();
     sfSprite_setTexture(duck1, texture2, sfTrue);
     sfSprite_setScale(duck1, scale_duck);
@@ -58,7 +61,8 @@ sfSprite* links(void)
     rect->top = ss[0][1];
     rect->width = ss[1][0];
     rect->height = ss[1][1];
-    sfTexture *texture2 = sfTexture_createFromFile("./img/spriteshit.png", rect);
+    sfTexture *texture2 =
+    sfTexture_createFromFile("./img/spriteshit.png", rect);
     sfSprite *duck1 = sfSprite_create();
     sfSprite_setTexture(duck1, texture2, sfTrue);
     sfSprite_setScale(duck1, scale_duck);
@@ -74,7 +78,8 @@ sfSprite* heart(void)
     rect->top = ss[0][1];
     rect->width = ss[1][0];
     rect->height = ss[1][1];
-    sfTexture *texture2 = sfTexture_createFromFile("./img/spriteshit.png", rect);
+    sfTexture *texture2 =
+    sfTexture_createFromFile("./img/spriteshit.png", rect);
     sfSprite *duck1 = sfSprite_create();
     sfSprite_setTexture(duck1, texture2, sfTrue);
     sfSprite_setScale(duck1, scale_duck);
@@ -90,7 +95,8 @@ sfSprite* heart_n(void)
     rect->top = ss[0][1];
     rect->width = ss[1][0];
     rect->height = ss[1][1];
-    sfTexture *texture2 = sfTexture_createFromFile("./img/spriteshit.png", rect);
+    sfTexture *texture2 =
+    sfTexture_createFromFile("./img/spriteshit.png", rect);
     sfSprite *duck1 = sfSprite_create();
     sfSprite_setTexture(duck1, texture2, sfTrue);
     sfSprite_setScale(duck1, scale_duck);
@@ -108,7 +114,7 @@ sfText* hp_monst(sfRenderWindow *window, char* hp_mst)
     sfText_setOutlineColor(text, sfBlack);
     sfText_setOutlineThickness(text, 4);
     sfFloatRect rect = sfText_getGlobalBounds(text);
-    sfVector2f pos = {1745, 60};
+    sfVector2f pos = {1745, 65};
     sfText_setPosition(text, pos);
     return text;
 }

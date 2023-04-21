@@ -70,7 +70,7 @@ int damage(int pswd, int dmg)
         return dmg = 2;
     if (pswd >= 867 && pswd <= 968)
         return dmg = 3;
-    else 
+    else
         return dmg = 4;
 }
 
@@ -103,9 +103,14 @@ char *int_to_str(int nb)
 
 void the_game(sfRenderWindow *window, sfEvent event, sfSprite *wall)
 {
-    int pswd = 431, i = 0, dmg = 0, hp_n = 70, hp_p = 3; sfSprite *bs_fig = bc_figh();
-    sfSprite *swd = sword(); sfSprite *mst = monstre(); sfSprite *link = links();
-    sfSprite *hearts = heart(); sfSprite *hearts_n = heart_n(); char* hp_mst = "70";
+    int pswd = 431, i = 0, dmg = 0, hp_n = 70, hp_p = 3;
+    float temp_time = 0;
+    sfSprite *bs_fig = bc_figh();
+    sfSprite *swd = sword(); sfSprite *mst = monstre();
+    sfSprite *link = links();
+    sfSprite *hearts = heart(); sfSprite *hearts_n = heart_n();
+    sfClock* clock = sfClock_create();
+    char* hp_mst = "70";
     sfText *hp_of_monst = hp_monst(window, hp_mst);
     while (sfRenderWindow_isOpen(window)) {
         pswd = mv_sword(pswd, &i);
@@ -113,15 +118,22 @@ void the_game(sfRenderWindow *window, sfEvent event, sfSprite *wall)
         sfVector2f poss_bcf = {1920 / 2 - 1090 / 2, 700};
         sfVector2f poss_sword = {pswd, 820};
         sfVector2f poss_mst = {1300, 250};
-        sfVector2f poss_link = {350, 500};
+        sfVector2f poss_link = {370, 530};
         sfVector2f poss_hearts = {10, 10};
         sfVector2f poss_hearts_n = {1680, 10};
+        sfTime time = sfClock_getElapsedTime(clock);
+        temp_time = sfTime_asSeconds(time);
+        if (temp_time >= 2.3){
+            hp_p--;
+            sfClock_restart(clock);
+        }
         while (sfRenderWindow_pollEvent(window, &event)) {
             if (event.type == sfEvtClosed)
                 sfRenderWindow_close(window);
             if (sfKeyboard_isKeyPressed(sfKeySpace)){
                 dmg = damage(pswd, dmg);
                 hp_n = hp_n - dmg;
+                sfClock_restart(clock);
                 printf("%d = hp enemie et hp player = %d\n", hp_n, hp_p);
                 }
             }
