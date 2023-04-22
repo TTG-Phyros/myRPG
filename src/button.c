@@ -23,7 +23,7 @@ button *c_button(sfVector2f * pos_scale, sfColor *colors,
     new_button->pos = pos_scale[0], new_button->size = pos_scale[1];
     new_button->hover_color = colors[2], new_button->click_color = colors[3];
     new_button->color = colors[0], new_button->hitbox = hitbox;
-    sfText *but_title = button_main_text(title, pos_scale, char_size);
+    //sfText *but_title = button_main_text(title, pos_scale, char_size);
     new_button->title = but_title, new_button->times_clicked = 0;
     new_button->is_clicked = is_clicked, new_button->is_hover = is_hovered;
     return new_button;

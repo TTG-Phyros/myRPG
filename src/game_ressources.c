@@ -55,6 +55,12 @@ void load_more_textures(game_ressources *game_res, sfVector2f sword_pos,
     game_res->textureRect = textureRect;
 }
 
+load_more_more_more_textures(game_ressources* game_res, sfVector2f sword_inv,
+                             sfVector2f hammer_inv, sfVector2f box_inv)
+{
+
+}
+
 void load_textures(game_ressources *game_res, window *my_win)
 {
     sfTexture **d_textures = malloc(sizeof(sfTexture *) * 8);
@@ -73,13 +79,18 @@ void load_textures(game_ressources *game_res, window *my_win)
     sfVector2f sword_pos = {my_win->width / 2.15, my_win->height / 1.17};
     sfVector2f hammer_pos = {my_win->width / 1.36, my_win->height / 4.4};
     sfVector2f dragon_pos = {my_win->width / 1.64, my_win->height / 4.5};
-    sfVector2f pos = {my_win->width / 38.4, my_win->height / 2.45};
+    sfVector2f pos = {my_win->width / 38.4, my_win->width / 2.45};
+    sfVector2f sword_inv = {my_win->width / 2.1573, my_win->width / 1.1739};
+    sfVector2f hammer_inv = {my_win->width / 1.3665, my_win->width / 4.4082};
+    sfVector2f box_inv = {my_win->width / 1.5802, my_win->width / 2.6024};
+    sfVector2f key_inv = {my_win->width / 5.4701, my_win->width / 1.1752};
     game_res->pos = pos;
     load_more_textures(game_res, sword_pos, hammer_pos, dragon_pos);
     load_more_more_textures(game_res);
+    load_more_more_more_textures(game_res, sword_inv, hammer_inv, box_inv);
 }
 
-void draw_game(window * my_win, game_ressources * game_ress)
+void draw_game(window * my_win, game_ressources * game_ress, int is_box)
 {
     sfRenderWindow_clear(my_win->win, sfBlack);
     sfRenderWindow_drawSprite(my_win->win, game_ress->map, NULL);
@@ -91,5 +102,13 @@ void draw_game(window * my_win, game_ressources * game_ress)
     sfRenderWindow_drawSprite(my_win->win, game_ress->hammer, NULL);
     sfRenderWindow_drawSprite(my_win->win, game_ress->sword, NULL);
     sfRenderWindow_drawSprite(my_win->win, game_ress->dragon, NULL);
+
+//*
+        if (is_box != 2)
+            sfRenderWindow_drawSprite(my_win->win, game_ress->box, NULL);
+        sfRenderWindow_drawSprite(my_win->win, game_ress->key, NULL);
+        sfRenderWindow_drawSprite(my_win->win, game_ress->roof, NULL);
+//*
+
     sfRenderWindow_display(my_win->win);
 }
