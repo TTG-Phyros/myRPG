@@ -81,3 +81,12 @@ void change_dialog(game_ressources *ress)
                             sfTrue);
     }
 }
+
+int check_fight(game_ressources *ress)
+{
+    sfColor temp;
+    temp = sfImage_getPixel(ress->wa, ress->pos.x + 8, ress->pos.y + 8);
+    if (temp.g == 4 && temp.b == 100)
+        return 1;
+    return 0;
+}

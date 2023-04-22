@@ -73,3 +73,17 @@ sfText *button_main_text(char *title, sfVector2f *pos_scale, int char_size)
     sfText_setPosition(text, pos);
     return text;
 }
+
+sfText *hp_monster_text(sfVector2f pos)
+{
+    sfText *text = sfText_create();
+    sfFont *font = sfFont_createFromFile(main_font);
+    sfText_setFont(text, font);
+    sfText_setString(text, "70");
+    sfText_setCharacterSize(text, 90);
+    sfText_setColor(text, sfGrey);
+    sfText_setOutlineColor(text, sfBlack);
+    sfText_setOutlineThickness(text, 4);
+    sfText_setPosition(text, pos);
+    return text;
+}

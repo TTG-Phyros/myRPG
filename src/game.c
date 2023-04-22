@@ -27,9 +27,12 @@ void cleanup(game_ressources *ress)
     sfSprite_destroy(ress->sword);
     sfSprite_destroy(ress->hammer);
     sfSprite_destroy(ress->dragon);
+    sfSprite_destroy(ress->d_box);
     sfImage_destroy(ress->wa);
     sfView_destroy(ress->game_view);
     sfClock_destroy(ress->game_clock);
+    sfClock_destroy(ress->change_dialog_timer);
+    free(ress);
 }
 
 int back_menu(window *my_win, game_ressources *game_ress)
@@ -40,6 +43,15 @@ int back_menu(window *my_win, game_ressources *game_ress)
     cleanup(game_ress);
     main_menu(my_win);
     return 0;
+}
+
+int start_fight(window *my_win, game_ressources *game_ress)
+{
+    sfFloatRect view_rect_reset = {0, 0, my_win->width, my_win->height};
+    sfView *view_reset = sfView_createFromRect(view_rect_reset);
+    sfRenderWindow_setView(my_win->win, view_reset);
+    the_fight(my_win);
+    sfRenderWindow_setView(my_win->win, game_ress->game_view);
 }
 
 int play(window *my_win)
@@ -57,8 +69,9 @@ int play(window *my_win)
         sfSprite_setTextureRect(game_ress->zelda, game_ress->textureRect);
         sfRenderWindow_setView(my_win->win, game_ress->game_view);
         draw_game(my_win, game_ress);
-        if (sfKeyboard_isKeyPressed(sfKeyE))
-            change_dialog(game_ress);
+        if (sfKeyboard_isKeyPressed(sfKeyE)) change_dialog(game_ress);
+        if (sfKeyboard_isKeyPressed(sfKeyE) && check_fight(game_ress))
+            start_fight(my_win, game_ress);
         if (sfKeyboard_isKeyPressed(sfKeyEscape))
             return back_menu(my_win, game_ress);
     }

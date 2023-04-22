@@ -35,6 +35,8 @@
         #define Dialog_6 "./content/dialog/6Dialog.png"
         #define Dialog_7 "./content/dialog/7Dialog.png"
         #define Dialog_Box "./content/dialog/Dialog_Box.png"
+        #define fight_back "./content/fight_back.png"
+        #define bcfight "./content/bcfight.png"
         #define sfOrange sfColor_fromRGB(255, 128, 0)
         #define sfGrey sfColor_fromRGB(100, 100, 100)
         #define sfLightGrey sfColor_fromRGB(160, 160, 160)
@@ -109,6 +111,16 @@
         float ti;
     };
 
+    typedef struct fight_ressources fight_ressources;
+    struct fight_ressources {
+        sfSprite *back, *back_f, *sword, *monster, *link, *heart_o, *hearts_m;
+        sfSprite *heart_tw, *heart_tr;
+        sfClock *auto_damage, *cooldown;
+        sfText *m_life;
+        int hp_monster, hp_player;
+        sfBool direction;
+    };
+
     // ! Functions
 
     // * button.c
@@ -164,6 +176,7 @@
                             int char_size);
     sfText *button_settings_text(window *my_win, sfVector2f pos, char *title,
     int size);
+    sfText *hp_monster_text(sfVector2f pos);
 
     // * play.c
     int play(window *my_win);
@@ -173,11 +186,19 @@
     int y_movement(game_ressources *ress);
     int x_movements(game_ressources *ress);
     void change_dialog(game_ressources *ress);
+    int check_fight(game_ressources *ress);
 
     // * game_ressources.c
     void load_more_textures(game_ressources *game_res, sfVector2f sword_pos,
     sfVector2f hammer_pos, sfVector2f dragon_pos);
     void load_textures(game_ressources *game_ress, window *my_win);
     void draw_game(window *my_win, game_ressources *game_ress);
+
+    // *fight.c
+    int the_fight(window *my_win);
+
+    // * fight_ressources.c
+    void load_fight_ressources(fight_ressources *fight_ress);
+    int end_screen(sfBool win, window *my_win, fight_ressources *ress);
 
 #endif
