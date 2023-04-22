@@ -79,7 +79,7 @@ int play(window *my_win)
         sfRenderWindow_setView(my_win->win, game_ress->game_view);
 
 //*
-        temp_wall = sfImage_getPixel(walls, zelda_pos.x, zelda_pos.y);
+        temp_wall = sfImage_getPixel(game_ress->wa, game_ress->pos.x, game_ress->pos.y);
         if (temp_wall.r == 64) {
             puts("you died dumbass");
             //? death screen
@@ -115,34 +115,7 @@ int play(window *my_win)
 
 
         if(sfKeyboard_isKeyPressed(sfKeySpace)) {
-            temp_wall = sfImage_getPixel(walls, zelda_pos.x, zelda_pos.y);//* here changed how the dialogue worked and made dialog option shift up
-
-            if (temp_wall.g == 1 && dialogue_option == 0){
-                sfSprite_setPosition(dialogue, zelda_pos);
-                is_dialogue = 1;
-                dialogue_option++;
-                temp_wall.g = 1;
-            }
-            if (temp_wall.g == 1 && dialogue_option == 1){
-                sfSprite_setTexture(dialogue, dialogue_texture1, sfTrue);
-                sfSprite_setPosition(dialogue, zelda_pos);
-                is_dialogue = 1;
-                dialogue_option++;
-                temp_wall.g = 1;
-            }
-            if (temp_wall.g == 1 && dialogue_option == 2){
-                sfSprite_setTexture(dialogue, dialogue_texture2, sfTrue);
-                sfSprite_setPosition(dialogue, zelda_pos);
-                is_dialogue = 1;
-                temp_wall.g = 1;
-            }
-            if (temp_wall.g == 1 && dialogue_option == 2){
-                sfSprite_setTexture(dialogue, dialogue_texture2, sfTrue);
-                sfSprite_setPosition(dialogue, zelda_pos);
-                is_dialogue = 1;
-                temp_wall.g = 1;
-            }
-            
+            temp_wall = sfImage_getPixel(game_ress->wa, game_ress->pos.x, pos.y);//* here changed how the dialogue worked and made dialog option shift up
 
             if (temp_wall.g == 7 && is_key == 1) {
                 is_key = 0;
