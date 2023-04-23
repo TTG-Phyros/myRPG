@@ -7,26 +7,26 @@
 
 #include "../include/rpg.h"
 
-buttoncod * button10(window *my_win, buttoncod * z)
+buttoncod * button10(window *my_win, buttoncod *z)
 {
     sfVector2f a = {1573, 205}; z->psc[0] = a, z->psc[1] = z->scale;
-    z->skill_list[0] = c_button(z->psc, z->co, "I", my_win->width / 30);
+    z->skill_list[0] = c_button(z->psc, z->co, " ", my_win->width / 30);
     sfVector2f b = {1403, 205}; z->psc[0] = b, z->psc[1] = z->scale;
-    z->skill_list[1] = c_button(z->psc, z->co, "II", my_win->width / 30);
+    z->skill_list[1] = c_button(z->psc, z->co, " ", my_win->width / 30);
     sfVector2f c = {1230, 205}; z->psc[0] = c, z->psc[1] = z->scale;
-    z->skill_list[2] = c_button(z->psc, z->co, "III", my_win->width / 30);
+    z->skill_list[2] = c_button(z->psc, z->co, " ", my_win->width / 30);
     sfVector2f d = {1573, 473}; z->psc[0] = d, z->psc[1] = z->scale;
-    z->skill_list[3] = c_button(z->psc, z->co, "I", my_win->width / 30);
+    z->skill_list[3] = c_button(z->psc, z->co, " ", my_win->width / 30);
     sfVector2f e = {1403, 468}; z->psc[0] = e, z->psc[1] = z->scale;
-    z->skill_list[4] = c_button(z->psc, z->co, "II", my_win->width / 30);
+    z->skill_list[4] = c_button(z->psc, z->co, " ", my_win->width / 30);
     sfVector2f f = {1230, 467}; z->psc[0] = f, z->psc[1] = z->scale;
-    z->skill_list[5] = c_button(z->psc, z->co, "III", my_win->width / 30);
+    z->skill_list[5] = c_button(z->psc, z->co, " ", my_win->width / 30);
     sfVector2f g = {1573, 730}; z->psc[0] = g, z->psc[1] = z->scale;
-    z->skill_list[6] = c_button(z->psc, z->co, "I", my_win->width / 30);
+    z->skill_list[6] = c_button(z->psc, z->co, " ", my_win->width / 30);
     sfVector2f h = {1403, 731}; z->psc[0] = h, z->psc[1] = z->scale;
-    z->skill_list[7] = c_button(z->psc, z->co, " II", my_win->width / 30);
+    z->skill_list[7] = c_button(z->psc, z->co, " ", my_win->width / 30);
     sfVector2f i = {1230, 730}; z->psc[0] = i, z->psc[1] = z->scale;
-    z->skill_list[8] = c_button(z->psc, z->co, " III", my_win->width / 30);
+    z->skill_list[8] = c_button(z->psc, z->co, " ", my_win->width / 30);
     return z;
 }
 
@@ -78,24 +78,24 @@ int redirect_skilltree_check(button_group *group, window *my_win)
 
 int skilltree(window *my_win, skill_ressources * skill_ress)
 {
-    sfEvent event; int temp = 0;
+    sfEvent event;
     button_group *skilltree_group = set_skilltree_button_group(my_win);
     float pos_scale_tree[2][2] = {{400, -80}, {1.1, 1.1}};
     float pos_scale_back[2][2] = {{0, 0}, {1, 1}};
     sfSprite *skill_tree = set_sprite(skill_png, pos_scale_tree);
     sfSprite *bg2 = set_sprite(game_menu_bg, pos_scale_back);
-    while (sfRenderWindow_isOpen(my_win->win)) {
+    for (int tem = 0; sfRenderWindow_isOpen(my_win->win); ) {
         while (sfRenderWindow_pollEvent(my_win->win, &event))
             check_event(my_win, event, NULL, NULL);
         if (sfKeyboard_isKeyPressed(sfKeyEscape))
             return game_menu(my_win, skill_ress);
-        if ((temp = redirect_skilltree_check(skilltree_group, my_win)) != -1)
-            redirect_skilltree_check_sec(temp, my_win, skill_ress);
+        tem = redirect_skilltree_check(skilltree_group, my_win);
+        if (tem == 9) return 0;
+        if (tem != -1)
+            redirect_skilltree_check_sec(tem, my_win, skill_ress);
         check_hover_and_click(skilltree_group, my_win);
-        sfRenderWindow_clear(my_win->win, sfBlack);
-        sfRenderWindow_drawSprite(my_win->win, bg2, NULL);
-        sfRenderWindow_drawSprite(my_win->win, skill_tree, NULL);
-        draw_button_group(skilltree_group, my_win);
+        draw_skilltree(my_win, bg2, skill_tree, skilltree_group);
         draw_skillpoint(my_win, skill_ress);
-        sfRenderWindow_display(my_win->win);    }
+        sfRenderWindow_display(my_win->win);
+    }
 }

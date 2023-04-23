@@ -40,6 +40,8 @@
         #define roof_map "./content/roof.png"
         #define game_menu_bg "./content/zelda_menu.png"
         #define skill_png "./content/skill_tree.png"
+        #define win_screen_path "./content/end_bg.jpg"
+        #define getPixel sfImage_getPixel
         #define sfOrange sfColor_fromRGB(255, 128, 0)
         #define sfGrey sfColor_fromRGB(100, 100, 100)
         #define sfLightGrey sfColor_fromRGB(160, 160, 160)
@@ -113,14 +115,14 @@
         sfView *game_view;
         sfClock *game_clock, *change_dialog_timer;
         sfBool has_sword, has_hammer, has_key, has_box;
-        int counter, d_opt, is_dragon;
+        int counter, d_opt, is_dragon, rotation, finished;
         float ti;
     };
 
     typedef struct fight_ressources fight_ressources;
     struct fight_ressources {
         sfSprite *back, *back_f, *sword, *monster, *link, *heart_o, *hearts_m;
-        sfSprite *heart_tw, *heart_tr;
+        sfSprite *heart_tw, *heart_tr, *heart_fo;
         sfClock *auto_damage, *cooldown;
         sfText *m_life;
         int hp_monster, hp_player;
@@ -129,15 +131,18 @@
 
     typedef struct skill_ressources skill_ressources;
     struct skill_ressources {
-    sfClock *skillclock;
-    sfText *skill_point;
-    int point;
-    int life;
-    int strong;
-    int speed;
-    int multiplicateur_strong;
-    int multiplicateur_life;
-    int multiplicateur_speed;
+        sfClock *skillclock, *draw;
+        sfText *skill_point, *text;
+        int point, life, strong, speed;
+        int multiplicateur_strong, multiplicateur_life, multiplicateur_speed;
+    };
+
+    typedef struct game_menu_re game_menu_re;
+    struct game_menu_re {
+        sfSprite *bg2;
+        sfText *m_title;
+        button_group *g_group;
+        sfVector2u size;
     };
 
     typedef struct buttoncod buttoncod;
@@ -147,7 +152,6 @@
         sfVector2f scale;
         button **skill_list;
     };
-
 
     // ! Functions
 
@@ -180,11 +184,17 @@
     char **str_to_word_array(char *str, char c);
     char *my_strmerge(char *str1, char *str2);
     char *merge_int_str(char *str, int nb);
+
+    // * more_str_related.c
+    int my_strlen(char const *str);
+    int my_intlen(int nb);
+    int char_to_int(char *str);
     char *int_to_str(int nb);
     int my_putstr(char const *str);
 
     // * settings.c
     int settings_menu(window *my_win, settings *my_setts);
+    void free_button(button *my_button);
 
     // * settings_button_group.c
     button_group *set_settings_button_group(window *my_win);
@@ -204,8 +214,10 @@
     // * game.c
     int play(window *my_win);
     void cleanup(game_ressources *ress);
-    int back_menu(window *my_win, game_ressources *game_ress, skill_ressources *skill_ress);
-    int start_fight(window *my_win, game_ressources *game_ress);
+    int back_menu(window *my_win, game_ressources *game_ress,
+                skill_ressources *skill_ress);
+    int start_fight(window *my_win, game_ressources *game_ress,
+                    skill_ressources *skill_ress);
 
     // * movements.c
     int change_sprite(int judge, int ans_one, int ans_two);
@@ -217,38 +229,75 @@
     // * game_ressources.c
     void load_more_textures(game_ressources *game_res, sfVector2f s_pos,
     sfVector2f h_pos, sfVector2f dragon_pos);
-    void load_textures(game_ressources *game_ress, window *my_win);
-    void draw_game(window *my_win, game_ressources *game_ress, int is_box);
+    void load_textures(game_ressources *game_ress, window *my_win,
+                    skill_ressources *skill_ress);
+    void draw_game(window *my_win, game_ressources *game_ress,
+                    int is_box, skill_ressources *skill_ress);
 
     // *fight.c
-    int the_fight(window *my_win);
+    int the_fight(window *my_win, skill_ressources *skill_ress);
 
     // * fight_ressources.c
     void load_fight_ressources(fight_ressources *fight_ress, window *w);
     int end_screen(sfBool win, window *my_win, fight_ressources *ress);
+    int clean_fight_ress(fight_ressources *ress, sfClock *disp,
+    sfText *text, sfBool win);
 
     // * game_sec.c
     int death_screen(window *w);
     int check_pickup(window *my_win, game_ressources *ress);
-    int change_pos_inv(game_ressources *ress, window *my_win, skill_ressources *skill_ress);
+    int change_pos_inv(game_ressources *ress, window *my_win,
+                        skill_ressources *skill_ress);
 
     // * game_menu.c
-    int game_menu(window *my_win, skill_ressources * skill_ress);
-    int redirect_game_check(button_group *group, window *my_win);
+    int game_menu(window *my_win, skill_ressources *skill_ress);
     int redirect_game_check_sec(int i, window *my_win,
-                                skill_ressources * skill_ress);
-    button_group *set_game_button_group(window *win);
+                            skill_ressources * skill_ress);
+    button_group *set_game_bugr(window *win);
     sfText *game_menu_text(window *my_win);
-    int settings_game_menu(window *my_win, skill_ressources * skill_ress);
 
     // * skilltree.c
     int skilltree(window *my_win, skill_ressources * skill_ress);
     button_group *set_skilltree_button_group(window *my_win);
-    int drawn_skillpoint(window *my_win, skill_ressources *skill_ress);
+    sfText *skilltext(window *my_win);
+
+    // * skillpoint.c
+    void gain_skillpoint(skill_ressources *ress);
+    int flife(window *my_win, skill_ressources *skill_ress);
+    int flife2(window *my_win, skill_ressources *skill_ress);
+    int flife3(window *my_win, skill_ressources *skill_ress);
+    int fspeed(window *my_win, skill_ressources *skill_ress);
+    int fspeed2(window *my_win, skill_ressources *skill_ress);
+    int fstrong(window *my_win, skill_ressources *skill_ress);
+    int fstrong2(window *my_win, skill_ressources *skill_ress);
+    int fstrong3(window *my_win, skill_ressources *skill_ress);
+    int fspeed3(window *my_win, skill_ressources *skill_ress);
+
+    // * interation.c
+    void rotate(game_ressources *ress);
+
+    // * game_menu_rel.c
+    void clean_game_menu(game_menu_re *ress);
+    int return_game_menu(int option, game_menu_re *ress, window *my_win);
+    void fill_game_menu(game_menu_re *ress, window *my_win);
+
+    // * skilltree.c
+    int skilltree(window *my_win, skill_ressources *skill_ress);
+    button_group *set_skilltree_button_group(window *my_win);
     sfText *skilltext(window *my_win);
     int fstrong(window *my_win, skill_ressources *skill_ress);
     int fspeed(window *my_win, skill_ressources *skill_ress);
     int flife(window *my_win, skill_ressources *skill_ress);
 
+    // *draw_skill.c
+    int draw_skillpoint(window *my_win, skill_ressources *skill_ress);
+    void draw_skilltree(window *my_win, sfSprite *bg2, sfSprite *skill_tree,
+    button_group *skilltree_group);
+
+    // *particle.c
+    void win_screen(game_ressources *ress, window *my_win);
+    int wining_screen(window *my_win);
+    void draw_main(window *my_win, sfSprite *main_back,
+    sfText *main_title, button_group *main_group);
 
 #endif

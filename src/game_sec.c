@@ -59,33 +59,34 @@ int check_pickup(window *my_win, game_ressources *res)
         if (temp.g == 7 && res->has_key == 0) res->has_key = 1;
         if (temp.g == 6 && res->has_hammer == 1 && res->has_box == 0)
             res->has_box = 1;
-        if (temp.g == 6 && res->has_box > 0); //? go to secret room
+        if (temp.g == 14) res->finished = 1;
         if (temp.g == 3 && res->has_sword == 0) res->has_sword = 1;
         if (temp.g == 4 && temp.b == 159 && res->has_hammer == 0)
             res->has_hammer = 1;
     }
 }
 
-int change_pos_inv(game_ressources *ress, window *my_win, skill_ressources *skill_ress)
+int change_pos_inv(game_ressources *res, window *my_win,
+                skill_ressources *skill_ress)
 {
-    ress->sword_inv.x = ress->pos.x - 120;
-    ress->sword_inv.y = ress->pos.y - 78;
-    ress->hammer_inv.x = ress->pos.x - 110;
-    ress->hammer_inv.y = ress->pos.y - 78;
-    ress->box_inv.x = ress->pos.x - 100, ress->box_inv.y = ress->pos.y - 78;
-    ress->key_inv.x = ress->pos.x - 84, ress->key_inv.y = ress->pos.y - 78;
-    if (ress->has_hammer)
-        sfSprite_setPosition(ress->hammer, ress->hammer_inv);
-    if (ress->has_sword)
-        sfSprite_setPosition(ress->sword, ress->sword_inv);
-    if (ress->has_box)
-        sfSprite_setPosition(ress->box, ress->box_inv);
-    if (ress->has_key)
-        sfSprite_setPosition(ress->key, ress->key_inv);
-    if (sfKeyboard_isKeyPressed(sfKeyE)) change_dialog(ress);
-    if (sfKeyboard_isKeyPressed(sfKeyE) && check_fight(ress))
-        ress->is_dragon = start_fight(my_win, ress);
+    sfView_move(res->game_view, res->movement);
+    sfSprite_setPosition(res->zelda, res->pos);
+    sfSprite_setTextureRect(res->zelda, res->textureRect);
+    sfRenderWindow_setView(my_win->win, res->game_view);
+    res->sword_inv.x = res->pos.x - 120, res->sword_inv.y = res->pos.y - 78;
+    res->hammer_inv.x = res->pos.x - 110, res->hammer_inv.y = res->pos.y - 78;
+    res->box_inv.x = res->pos.x - 100, res->box_inv.y = res->pos.y - 78;
+    res->key_inv.x = res->pos.x - 84, res->key_inv.y = res->pos.y - 78;
+    sfVector2f pos = {res->pos.x + 40, res->pos.y + 60};
+    sfText_setPosition(skill_ress->text, pos);
+    if (res->has_hammer) sfSprite_setPosition(res->hammer, res->hammer_inv);
+    if (res->has_sword) sfSprite_setPosition(res->sword, res->sword_inv);
+    if (res->has_box) sfSprite_setPosition(res->box, res->box_inv);
+    if (res->has_key) sfSprite_setPosition(res->key, res->key_inv);
+    if (sfKeyboard_isKeyPressed(sfKeyE)) change_dialog(res);
+    if (sfKeyboard_isKeyPressed(sfKeyE) && check_fight(res))
+        res->is_dragon = start_fight(my_win, res, skill_ress);
     if (sfKeyboard_isKeyPressed(sfKeyEscape))
-        return back_menu(my_win, ress, skill_ress);
+        return back_menu(my_win, res, skill_ress);
     return 0;
 }

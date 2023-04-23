@@ -36,7 +36,7 @@ int settings_menu(window *my_win, settings *my_setts)
     for (sfEvent event; sfRenderWindow_isOpen(my_win->win); ) {
         while (sfRenderWindow_pollEvent(my_win->win, &event))
             check_event(my_win, event, settings_group, NULL);
-        if (back_check(settings_group, my_win)) return main_menu(my_win);
+        if (back_check(settings_group, my_win)) return 0;
         fix_resize(settings_group, my_win);
         if (sfTime_asSeconds(sfClock_getElapsedTime(delay)) > 1)
             check_hover_and_click(settings_group, my_win);
@@ -47,4 +47,11 @@ int settings_menu(window *my_win, settings *my_setts)
         draw_button_group(settings_group, my_win);
         sfRenderWindow_display(my_win->win);
     } return 0;
+}
+
+void free_button(button *my_button)
+{
+    free(my_button->hitbox);
+    sfRectangleShape_destroy(my_button->shape);
+    sfText_destroy(my_button->title);
 }

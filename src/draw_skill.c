@@ -81,4 +81,14 @@ int draw_skillpoint(window *my_win, skill_ressources *skill_ress)
     draw_life(my_win, skill_ress, font);
     draw_strong(my_win, skill_ress, font);
     draw_speed(my_win, skill_ress, font);
+    sfFont_destroy(font);
+}
+
+void draw_skilltree(window *my_win, sfSprite *bg2, sfSprite *skill_tree,
+button_group *skilltree_group)
+{
+    sfRenderWindow_clear(my_win->win, sfBlack);
+    sfRenderWindow_drawSprite(my_win->win, bg2, NULL);
+    sfRenderWindow_drawSprite(my_win->win, skill_tree, NULL);
+    draw_button_group(skilltree_group, my_win);
 }

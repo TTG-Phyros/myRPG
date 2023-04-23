@@ -25,6 +25,8 @@ SRC				=		./src/main.c					\
 						./src/game_menu.c				\
 						./src/skilltree.c 				\
 						./src/skillpoint.c				\
+						./src/interaction.c				\
+						./src/game_menu_rel.c			\
 						./src/skillpoint_sec.c 			\
 						./src/draw_skill.c 				\
 
@@ -43,6 +45,4 @@ clean:
 fclean:	clean
 		rm -f $(NAME)
 
-re:	fclean all 
-	rm -f $(OBJ)
-
+re:	fclean all

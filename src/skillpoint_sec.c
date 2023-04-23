@@ -42,3 +42,13 @@ int fspeed3(window *my_win, skill_ressources *skill_ress)
     }
     return skill_ress->speed;
 }
+
+void gain_skillpoint(skill_ressources *ress)
+{
+    if (sfTime_asSeconds(sfClock_getElapsedTime(ress->skillclock)) > 20
+        && ress->point < 6) {
+        ress->point++;
+        sfClock_restart(ress->draw);
+        sfClock_restart(ress->skillclock);
+    }
+}

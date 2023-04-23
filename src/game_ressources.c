@@ -7,7 +7,8 @@
 
 #include "../include/rpg.h"
 
-void load_more_more_more_textures(game_ressources *game_ress)
+void load_more_more_more_textures(game_ressources *game_ress,
+                window *my_win, skill_ressources *skill_ress)
 {
     sfVector2f s_pos = {893, 923}, h_pos = {1412, 245.5};
     sfVector2f dragon_pos = {1170, 240}, pos = {50, 441};
@@ -22,6 +23,12 @@ void load_more_more_more_textures(game_ressources *game_ress)
     sfIntRect textureRect2 = {238, 1, 8, 16}, textureRect3 = {227, 1, 8, 16};
     sfSprite_setTextureRect(game_ress->sword, textureRect2);
     sfSprite_setTextureRect(game_ress->hammer, textureRect3);
+    sfVector2f temp = {0, 0};
+    skill_ress->text = button_settings_text(my_win, temp, "+1 SkillPoint", 8);
+    sfText_setOutlineThickness(skill_ress->text, 1);
+    skill_ress->point = 1, skill_ress->draw = sfClock_create();
+    skill_ress->life = 0, skill_ress->speed = 0, skill_ress->strong = 0;
+    game_ress->finished = 0;
 }
 
 void load_more_more_textures(game_ressources *game_ress)
@@ -73,7 +80,8 @@ void load_more_textures(game_ressources *game_res, sfVector2f s_pos,
     game_res->textureRect = textureRect;
 }
 
-void load_textures(game_ressources *game_res, window *my_win)
+void load_textures(game_ressources *game_res, window *my_win,
+                skill_ressources *skill_ress)
 {
     sfTexture **d_textures = malloc(sizeof(sfTexture *) * 8);
     d_textures[0] = sfTexture_createFromFile(Dialog_1, NULL);
@@ -91,11 +99,13 @@ void load_textures(game_ressources *game_res, window *my_win)
     game_res->roof = sfSprite_create();
     sfTexture *roof_text = sfTexture_createFromFile(roof_map, NULL);
     sfSprite_setTexture(game_res->roof, roof_text, sfTrue);
-    load_more_more_more_textures(game_res);
+    skill_ress->skillclock = sfClock_create();
+    load_more_more_more_textures(game_res, my_win, skill_ress);
     load_more_more_textures(game_res);
 }
 
-void draw_game(window * my_win, game_ressources * game_ress, int is_box)
+void draw_game(window * my_win, game_ressources * game_ress,
+                int is_box, skill_ressources * skill_ress)
 {
     sfRenderWindow_clear(my_win->win, sfBlack);
     sfRenderWindow_drawSprite(my_win->win, game_ress->map, NULL);
@@ -103,6 +113,8 @@ void draw_game(window * my_win, game_ressources * game_ress, int is_box)
         sfRenderWindow_drawSprite(my_win->win, game_ress->d_box, NULL);
         sfRenderWindow_drawSprite(my_win->win, game_ress->dialog, NULL);
     }
+    if (is_box != 2)
+        sfRenderWindow_drawSprite(my_win->win, game_ress->box, NULL);
     sfRenderWindow_drawSprite(my_win->win, game_ress->zelda, NULL);
     sfRenderWindow_drawSprite(my_win->win, game_ress->roof, NULL);
     sfRenderWindow_drawSprite(my_win->win, game_ress->hammer, NULL);
@@ -110,7 +122,7 @@ void draw_game(window * my_win, game_ressources * game_ress, int is_box)
     sfRenderWindow_drawSprite(my_win->win, game_ress->key, NULL);
     if (game_ress->is_dragon == 0)
         sfRenderWindow_drawSprite(my_win->win, game_ress->dragon, NULL);
-    if (is_box != 2)
-        sfRenderWindow_drawSprite(my_win->win, game_ress->box, NULL);
+    if (sfTime_asSeconds(sfClock_getElapsedTime(skill_ress->draw)) < 2)
+        sfRenderWindow_drawText(my_win->win, skill_ress->text, NULL);
     sfRenderWindow_display(my_win->win);
 }

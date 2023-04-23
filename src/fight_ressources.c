@@ -25,6 +25,14 @@ sfSprite *set_sprite_ss(char *filepath, float pos[2][2], float ss_pos[2][2])
     return sprite;
 }
 
+void more_more_fight_ress(fight_ressources *res, window *w)
+{
+    float ps_hearts_f[2][2] = {{w->width / 4.46, w->height / 108},
+    {w->height / 108, w->height / 108}};
+    float ps_hearts_ss_f[2][2] = {{153, 1}, {15, 15}};
+    res->heart_fo = set_sprite_ss(sprite_sheet, ps_hearts_f, ps_hearts_ss_f);
+}
+
 void more_load_fight_ress(fight_ressources *res, window *w)
 {
     float ps_hearts[2][2] = {{w->width / 192, w->height / 108},
@@ -70,6 +78,7 @@ void load_fight_ressources(fight_ressources *ress, window *w)
     float ps_link_ss[2][2] = {{77, 1}, {16, 16}};
     ress->link = set_sprite_ss(sprite_sheet, ps_link, ps_link_ss);
     more_load_fight_ress(ress, w);
+    more_more_fight_ress(ress, w);
 }
 
 int clean_fight_ress(fight_ressources *ress, sfClock *disp,
@@ -91,28 +100,4 @@ int clean_fight_ress(fight_ressources *ress, sfClock *disp,
     sfText_destroy(text);
     free(ress);
     return win;
-}
-
-int end_screen(sfBool win, window *w, fight_ressources *ress)
-{
-    sfClock *disp = sfClock_create();
-    sfText *text = sfText_create();
-    sfFont *font = sfFont_createFromFile(main_font);
-    sfText_setFont(text, font);
-    if (win) sfText_setString(text, "   Bravo,\nTu as gagne.");
-    else
-        sfText_setString(text, "  Dommage,\nTu as perdu.");
-    sfText_setCharacterSize(text, 150), sfText_setColor(text, sfGrey);
-    sfText_setOutlineColor(text, sfBlack), sfText_setOutlineThickness(text, 4);
-    sfFloatRect r = sfText_getGlobalBounds(text);
-    sfVector2f pos = {(w->width - r.width) / 2, (w->height - r.height) / 2};
-    sfText_setPosition(text, pos);
-    while (sfRenderWindow_isOpen(w->win)) {
-        if (sfTime_asSeconds(sfClock_getElapsedTime(disp)) >= 3) break;
-        sfRenderWindow_clear(w->win, sfBlack);
-        sfRenderWindow_drawText(w->win, text, NULL);
-        sfRenderWindow_display(w->win);
-    }
-    sfFont_destroy(font);
-    return clean_fight_ress(ress, disp, text, win);
 }

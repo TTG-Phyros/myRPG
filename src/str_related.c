@@ -89,6 +89,7 @@ char *merge_int_str(char *str, int nb)
         diviseur *= 10;
     for (; i != str_l; i++)
         dest[i] = str[i];
+    if (nb == 0) dest[i] = '0';
     for (int j = 0; j != int_l; i++, j++, diviseur /= 10) {
         if (diviseur < 10)
             num = nb;

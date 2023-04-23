@@ -59,7 +59,7 @@ int redirect_main_check_sec(int i, window *my_win)
     if (i == 0)
         play(my_win);
     if (i == 1)
-        printf("Resume\n");
+        my_putstr("Save not found...\n");
     if (i == 2)
         settings_menu(my_win, NULL);
     if (i == 3) {

@@ -59,26 +59,26 @@ sfSprite *set_sprite(char *filepath, float pos[2][2])
 
 int main_menu(window *my_win)
 {
-    sfEvent event;
-    float pos_scale_back[2][2] = {{0, 0}, {1, 1}};
+    sfEvent event; float pos_scale_back[2][2] = {{0, 0}, {1, 1}};
     sfSprite *main_back = set_sprite(back_main, pos_scale_back);
-    sfText *main_title = main_text(my_win);
-    sfClock *delay = sfClock_create();
-    button_group *main_group = set_main_button_group(my_win);
-    for (int temp = 0; sfRenderWindow_isOpen(my_win->win); ) {
+    sfText *m_t = main_text(my_win); sfClock *delay = sfClock_create();
+    button_group *m_g = set_main_button_group(my_win);
+    sfVector2u size = sfRenderWindow_getSize(my_win->win);
+    for (int tem = 0, old_w = size.x; sfRenderWindow_isOpen(my_win->win); ) {
+        old_w = size.x, size = sfRenderWindow_getSize(my_win->win);
+        if (size.x != old_w) {
+            main_back = set_sprite(back_main, pos_scale_back);
+            m_t = main_text(my_win), m_g = set_main_button_group(my_win);
+        }
         while (sfRenderWindow_pollEvent(my_win->win, &event))
-            check_event(my_win, event, main_group, NULL);
-        if ((temp = redirect_main_check(main_group, my_win)) != -1)
-            return redirect_main_check_sec(temp, my_win);
+            check_event(my_win, event, m_g, NULL);
+        tem = redirect_main_check(m_g, my_win);
+        if (tem == 2) redirect_main_check_sec(tem, my_win);
+        if (tem != -1 && tem != 2) return redirect_main_check_sec(tem, my_win);
         if (sfTime_asSeconds(sfClock_getElapsedTime(delay)) > 1)
-            check_hover_and_click(main_group, my_win);
-        sfRenderWindow_clear(my_win->win, sfBlack);
-        sfRenderWindow_drawSprite(my_win->win, main_back, NULL);
-        draw_button_group(main_group, my_win);
-        sfRenderWindow_drawText(my_win->win, main_title, NULL);
-        sfRenderWindow_display(my_win->win);
-    }
-    return 0;
+            check_hover_and_click(m_g, my_win);
+        draw_main(my_win, main_back, m_t, m_g);
+    } return 0;
 }
 
 int main(int ac, char **av)
