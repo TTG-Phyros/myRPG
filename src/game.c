@@ -34,11 +34,12 @@ void cleanup(game_ressources *ress)
 
 int back_menu(window *my_win, game_ressources *game_ress)
 {
+    
     sfFloatRect view_rect_reset = {0, 0, my_win->width, my_win->height};
     sfView *view_reset = sfView_createFromRect(view_rect_reset);
     sfRenderWindow_setView(my_win->win, view_reset);
     cleanup(game_ress);
-    main_menu(my_win);
+    game_menu(my_win);
     return 0;
 }
 
@@ -54,13 +55,20 @@ int start_fight(window *my_win, game_ressources *game_ress)
 
 int play(window *my_win)
 {
-    sfEvent event;
+    sfEvent event; sfClock *skillclock = sfClock_create();
+    skill_ressources *skill_ress = malloc(sizeof(skill_ressources));
     game_ressources *game_ress = malloc(sizeof(game_ressources));
     load_textures(game_ress, my_win);
     while (sfRenderWindow_isOpen(my_win->win)) {
         reset_variables(game_ress);
         while (sfRenderWindow_pollEvent(my_win->win, &event))
             check_event(my_win, event, NULL, game_ress->game_view);
+        if (sfTime_asSeconds(sfClock_getElapsedTime(skillclock)) > 3) {
+            skill_ress->point++ ;
+            draw_skillpoint(my_win, skill_ress);
+            //if (skillpoint == 6) sfClock_destroy(skillclock);
+            sfClock_restart(skillclock);
+        }
         x_movements(game_ress);
         sfView_move(game_ress->game_view, game_ress->movement);
         sfSprite_setPosition(game_ress->zelda, game_ress->pos);

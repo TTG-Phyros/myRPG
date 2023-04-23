@@ -22,6 +22,9 @@ SRC				=		./src/main.c					\
 						./src/fight.c					\
 						./src/fight_ressources.c		\
 						./src/game_sec.c				\
+						./src/game_menu.c				\
+						./src/skilltree.c 				\
+						./src/skillpoint.c				\
 
 OBJ				=				$(SRC:.c=.o)
 

@@ -38,6 +38,8 @@
         #define fight_back "./content/fight_back.png"
         #define bcfight "./content/bcfight.png"
         #define roof_map "./content/roof.png"
+        #define game_menu_bg "./content/zelda_menu.png"
+        #define skill_png "./content/skill_tree.png"
         #define sfOrange sfColor_fromRGB(255, 128, 0)
         #define sfGrey sfColor_fromRGB(100, 100, 100)
         #define sfLightGrey sfColor_fromRGB(160, 160, 160)
@@ -123,6 +125,13 @@
         sfText *m_life;
         int hp_monster, hp_player;
         sfBool direction;
+    };
+
+    typedef struct skill_ressources skill_ressources;
+    struct skill_ressources {
+    sfClock *skillclock;
+    sfText *skill_point;
+    int point;
     };
 
     // ! Functions
@@ -212,5 +221,22 @@
     int death_screen(window *w);
     int check_pickup(window *my_win, game_ressources *ress);
     int change_pos_inv(game_ressources *ress, window *my_win);
+
+    // * game_menu.c
+    int game_menu(window *my_win);
+    int redirect_game_check(button_group *group, window *my_win);
+    int redirect_game_check_sec(int i, window *my_win, skill_ressources * skill_ress);
+    button_group *set_game_button_group(window *win);
+    sfText *game_menu_text(window *my_win);
+    int settings_game_menu(window *my_win, skill_ressources * skill_ress);
+
+    // * skilltree.c
+    int skilltree(window *my_win, skill_ressources * skill_ress);
+    int redirect_game_check(button_group *group, window *my_win);
+    int redirect_game_check_sec(int i, window *my_win, 
+                                skill_ressources * skill_ress);
+    button_group *set_skilltree_button_group(window *my_win);
+    int drawn_skillpoint(window *my_win, skill_ressources *skill_ress);
+    sfText *skilltext(window *my_win);
 
 #endif
