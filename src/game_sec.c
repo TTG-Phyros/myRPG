@@ -66,7 +66,7 @@ int check_pickup(window *my_win, game_ressources *res)
     }
 }
 
-int change_pos_inv(game_ressources *ress, window *my_win)
+int change_pos_inv(game_ressources *ress, window *my_win, skill_ressources *skill_ress)
 {
     ress->sword_inv.x = ress->pos.x - 120;
     ress->sword_inv.y = ress->pos.y - 78;
@@ -86,6 +86,6 @@ int change_pos_inv(game_ressources *ress, window *my_win)
     if (sfKeyboard_isKeyPressed(sfKeyE) && check_fight(ress))
         ress->is_dragon = start_fight(my_win, ress);
     if (sfKeyboard_isKeyPressed(sfKeyEscape))
-        return back_menu(my_win, ress);
+        return back_menu(my_win, ress, skill_ress);
     return 0;
 }

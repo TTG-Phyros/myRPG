@@ -132,7 +132,22 @@
     sfClock *skillclock;
     sfText *skill_point;
     int point;
+    int life;
+    int strong;
+    int speed;
+    int multiplicateur_strong;
+    int multiplicateur_life;
+    int multiplicateur_speed;
     };
+
+    typedef struct buttoncod buttoncod;
+    struct buttoncod {
+        sfVector2f *psc;
+        sfColor *co;
+        sfVector2f scale;
+        button **skill_list;
+    };
+
 
     // ! Functions
 
@@ -165,11 +180,6 @@
     char **str_to_word_array(char *str, char c);
     char *my_strmerge(char *str1, char *str2);
     char *merge_int_str(char *str, int nb);
-
-    // * more_str_related.c
-    int my_strlen(char const *str);
-    int my_intlen(int nb);
-    int char_to_int(char *str);
     char *int_to_str(int nb);
     int my_putstr(char const *str);
 
@@ -194,7 +204,7 @@
     // * game.c
     int play(window *my_win);
     void cleanup(game_ressources *ress);
-    int back_menu(window *my_win, game_ressources *game_ress);
+    int back_menu(window *my_win, game_ressources *game_ress, skill_ressources *skill_ress);
     int start_fight(window *my_win, game_ressources *game_ress);
 
     // * movements.c
@@ -220,23 +230,25 @@
     // * game_sec.c
     int death_screen(window *w);
     int check_pickup(window *my_win, game_ressources *ress);
-    int change_pos_inv(game_ressources *ress, window *my_win);
+    int change_pos_inv(game_ressources *ress, window *my_win, skill_ressources *skill_ress);
 
     // * game_menu.c
-    int game_menu(window *my_win);
+    int game_menu(window *my_win, skill_ressources * skill_ress);
     int redirect_game_check(button_group *group, window *my_win);
-    int redirect_game_check_sec(int i, window *my_win, skill_ressources * skill_ress);
+    int redirect_game_check_sec(int i, window *my_win,
+                                skill_ressources * skill_ress);
     button_group *set_game_button_group(window *win);
     sfText *game_menu_text(window *my_win);
     int settings_game_menu(window *my_win, skill_ressources * skill_ress);
 
     // * skilltree.c
     int skilltree(window *my_win, skill_ressources * skill_ress);
-    int redirect_game_check(button_group *group, window *my_win);
-    int redirect_game_check_sec(int i, window *my_win, 
-                                skill_ressources * skill_ress);
     button_group *set_skilltree_button_group(window *my_win);
     int drawn_skillpoint(window *my_win, skill_ressources *skill_ress);
     sfText *skilltext(window *my_win);
+    int fstrong(window *my_win, skill_ressources *skill_ress);
+    int fspeed(window *my_win, skill_ressources *skill_ress);
+    int flife(window *my_win, skill_ressources *skill_ress);
+
 
 #endif

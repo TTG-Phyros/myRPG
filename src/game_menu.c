@@ -7,30 +7,6 @@
 
 #include "../include/rpg.h"
 
-int settings_game_menu(window *my_win, skill_ressources * skill_ress)
-{
-    sfEvent event;
-    float pos_scale_back[2][2] = {{0, 0}, {1, 1}};
-    sfSprite *set_back = set_sprite(settings_back, pos_scale_back);
-    sfText *settings_title = settings_text(my_win);
-    settings *my_setts = settings_names(my_win);
-    button_group *settings_group = set_settings_button_group(my_win);
-    while (sfRenderWindow_isOpen(my_win->win)) {
-        while (sfRenderWindow_pollEvent(my_win->win, &event))
-            check_event(my_win, event, settings_group, NULL);
-        if (back_check(settings_group, my_win)) return game_menu(my_win);
-        fix_resize(settings_group, my_win);
-        check_hover_and_click(settings_group, my_win);
-        if (settings_redirections(settings_group, my_setts, my_win))
-            return settings_game_menu(my_win, skill_ress);
-        sfRenderWindow_clear(my_win->win, sfBlack);
-        draw_settings_texts(my_setts, settings_title, my_win, set_back);
-        draw_button_group(settings_group, my_win);
-        sfRenderWindow_display(my_win->win);
-    }
-    return 0;
-}
-
 sfText *game_menu_text(window *my_win)
 {
     sfText *text = sfText_create();
@@ -67,7 +43,8 @@ button_group *set_game_button_group(window *win)
     main_group->button_list = b_l;
 }
 
-int redirect_game_check_sec(int i, window *my_win, skill_ressources * skill_ress)
+int redirect_game_check_sec(int i, window *my_win, 
+                            skill_ressources * skill_ress)
 {
     if (i == 0)
         play(my_win);
@@ -87,9 +64,8 @@ int redirect_game_check(button_group *group, window *my_win)
     return -1;
 }
 
-int game_menu(window *my_win)
+int game_menu(window *my_win, skill_ressources * skill_ress)
 {
-    skill_ressources * skill_ress = malloc(sizeof(skill_ressources));
     sfEvent event; int temp = 0;
     float pos_scale_back[2][2] = {{0, 0}, {1, 1}};
     sfSprite *bg2 = set_sprite(game_menu_bg, pos_scale_back);
@@ -98,7 +74,6 @@ int game_menu(window *my_win)
     while (sfRenderWindow_isOpen(my_win->win)) {
         while (sfRenderWindow_pollEvent(my_win->win, &event))
             check_event(my_win, event, game_group, NULL);
-        //if (sfKeyboard_isKeyPressed(sfKeyEscape)) return main_menu(my_win);
         if ((temp = redirect_game_check(game_group, my_win)) != -1)
             return redirect_game_check_sec(temp, my_win, skill_ress);
         check_hover_and_click(game_group, my_win);
