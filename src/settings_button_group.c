@@ -51,7 +51,7 @@ settings *settings_names(window *w)
     names[4] = button_settings_text(w, pos, int_to_str(w->volume),
     w->width / 38.4);
     names[5] = NULL, my_setts->volume = w->volume;
-    my_setts->fullscreen = sfFalse, my_setts->names = names;
+    my_setts->fullscreen = w->fullscreen, my_setts->names = names;
     return my_setts;
 }
 

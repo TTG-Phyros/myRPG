@@ -7,20 +7,20 @@
 
 #include "../include/rpg.h"
 
-void damage(fight_ressources *ress)
+void damage(fight_ressources *ress, window *my_win)
 {
     sfTime time = sfClock_getElapsedTime(ress->cooldown);
     if (sfTime_asSeconds(time) < 0.2)
         return;
     int dmg = 0;
     sfVector2f pos = sfSprite_getPosition(ress->sword);
-    if (pos.x <= 516 || pos.x >= 1290)
+    if (pos.x <= my_win->width / 3.72 || pos.x >= my_win->width / 1.488)
         ress->hp_player--;
-    if (pos.x <= 708 || pos.x >= 1110)
+    if (pos.x <= my_win->width / 2.7 || pos.x >= my_win->width / 1.7)
         dmg = 1;
-    if (pos.x <= 867 || pos.x >= 968)
+    if (pos.x <= my_win->width / 2.2 || pos.x >= my_win->width / 1.98)
         dmg = 2;
-    if (pos.x >= 867 && pos.x <= 968)
+    if (pos.x >= my_win->width / 2.2 && pos.x <= my_win->width / 1.98)
         dmg = 3;
     ress->hp_monster -= dmg;
     sfClock_restart(ress->auto_damage);
@@ -52,10 +52,10 @@ void eventhandler(sfEvent event, fight_ressources *ress,
     if (event.type == sfEvtClosed)
         sfRenderWindow_close(my_win->win);
     if (sfKeyboard_isKeyPressed(sfKeySpace))
-        damage(ress);
+        damage(ress, my_win);
 }
 
-void move_sword(fight_ressources *ress, sfClock *clock)
+void move_sword(fight_ressources *ress, sfClock *clock, window *my_win)
 {
     sfClock_restart(clock);
     sfTime time = sfClock_getElapsedTime(ress->auto_damage);
@@ -64,16 +64,14 @@ void move_sword(fight_ressources *ress, sfClock *clock)
         sfClock_restart(ress->auto_damage);
     }
     sfVector2f pos = sfSprite_getPosition(ress->sword);
-    if (pos.x >= 1400 && ress->direction == sfTrue)
+    if (pos.x >= my_win->width / 1.37 && ress->direction == sfTrue)
         ress->direction = sfFalse;
-    if (pos.x <= 430 && ress->direction == sfFalse)
+    if (pos.x <= my_win->width / 4.46 && ress->direction == sfFalse)
         ress->direction = sfTrue;
     if (ress->direction == sfTrue)
-        pos.x += 20;
+        pos.x += my_win->width / 96;
     if (ress->direction == sfFalse)
-        pos.x -= 20;
-    if (pos.x > 1600)
-        pos.x = 430;
+        pos.x -= my_win->width / 96;
     sfSprite_setPosition(ress->sword, pos);
 }
 
@@ -81,13 +79,13 @@ int the_fight(window *my_win)
 {
     sfEvent event;
     fight_ressources *fight_ress = malloc(sizeof(fight_ressources));
-    load_fight_ressources(fight_ress);
+    load_fight_ressources(fight_ress, my_win);
     sfClock *clock_to_move = sfClock_create();
     sfTime time;
     while (sfRenderWindow_isOpen(my_win->win)) {
         time = sfClock_getElapsedTime(clock_to_move);
         if (sfTime_asMilliseconds(time) >= 10)
-            move_sword(fight_ress, clock_to_move);
+            move_sword(fight_ress, clock_to_move, my_win);
         while (sfRenderWindow_pollEvent(my_win->win, &event))
             eventhandler(event, fight_ress, my_win);
         if (fight_ress->hp_player <= 0)

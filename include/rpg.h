@@ -37,6 +37,7 @@
         #define Dialog_Box "./content/dialog/Dialog_Box.png"
         #define fight_back "./content/fight_back.png"
         #define bcfight "./content/bcfight.png"
+        #define roof_map "./content/roof.png"
         #define sfOrange sfColor_fromRGB(255, 128, 0)
         #define sfGrey sfColor_fromRGB(100, 100, 100)
         #define sfLightGrey sfColor_fromRGB(160, 160, 160)
@@ -101,13 +102,16 @@
     typedef struct game_ressources game_ressources;
     struct game_ressources {
         sfSprite *dialog, *map, *zelda, *sword, *hammer, *dragon, *d_box;
+        sfSprite *box, *key, *roof;
         sfTexture **d_textures;
         sfImage *wa;
-        sfVector2f pos, movement;
+        sfVector2f pos, movement, sword_inv, hammer_inv, box_inv, key_inv;
+        sfVector2f s_pos, h_pos, dragon_pos, box_pos, key_pos;
         sfIntRect textureRect;
         sfView *game_view;
         sfClock *game_clock, *change_dialog_timer;
-        int counter, d_opt;
+        sfBool has_sword, has_hammer, has_key, has_box;
+        int counter, d_opt, is_dragon;
         float ti;
     };
 
@@ -161,7 +165,7 @@
     int my_putstr(char const *str);
 
     // * settings.c
-    int settings_menu(window *my_win);
+    int settings_menu(window *my_win, settings *my_setts);
 
     // * settings_button_group.c
     button_group *set_settings_button_group(window *my_win);
@@ -176,10 +180,13 @@
                             int char_size);
     sfText *button_settings_text(window *my_win, sfVector2f pos, char *title,
     int size);
-    sfText *hp_monster_text(sfVector2f pos);
+    sfText *hp_monster_text(sfVector2f pos, int size);
 
-    // * play.c
+    // * game.c
     int play(window *my_win);
+    void cleanup(game_ressources *ress);
+    int back_menu(window *my_win, game_ressources *game_ress);
+    int start_fight(window *my_win, game_ressources *game_ress);
 
     // * movements.c
     int change_sprite(int judge, int ans_one, int ans_two);
@@ -189,16 +196,21 @@
     int check_fight(game_ressources *ress);
 
     // * game_ressources.c
-    void load_more_textures(game_ressources *game_res, sfVector2f sword_pos,
-    sfVector2f hammer_pos, sfVector2f dragon_pos);
+    void load_more_textures(game_ressources *game_res, sfVector2f s_pos,
+    sfVector2f h_pos, sfVector2f dragon_pos);
     void load_textures(game_ressources *game_ress, window *my_win);
-    void draw_game(window *my_win, game_ressources *game_ress);
+    void draw_game(window *my_win, game_ressources *game_ress, int is_box);
 
     // *fight.c
     int the_fight(window *my_win);
 
     // * fight_ressources.c
-    void load_fight_ressources(fight_ressources *fight_ress);
+    void load_fight_ressources(fight_ressources *fight_ress, window *w);
     int end_screen(sfBool win, window *my_win, fight_ressources *ress);
+
+    // * game_sec.c
+    int death_screen(window *w);
+    int check_pickup(window *my_win, game_ressources *ress);
+    int change_pos_inv(game_ressources *ress, window *my_win);
 
 #endif

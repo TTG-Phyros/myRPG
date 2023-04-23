@@ -19,7 +19,7 @@ int change_sprite(int judge, int ans_one, int ans_two)
 int y_movement(game_ressources *res)
 {
     sfColor co, ci;
-    if (sfKeyboard_isKeyPressed(sfKeyDown)) {
+    if (sfKeyboard_isKeyPressed(sfKeyS)) {
         co = sfImage_getPixel(res->wa, res->pos.x, res->pos.y + 18 + res->ti);
         ci = sfImage_getPixel(res->wa, res->pos.x + 14.4,
         res->pos.y + 18 + res->ti);
@@ -28,7 +28,7 @@ int y_movement(game_ressources *res)
             res->textureRect.left = change_sprite(res->counter, 1, 20);
         }
     }
-    if (sfKeyboard_isKeyPressed(sfKeyUp)) {
+    if (sfKeyboard_isKeyPressed(sfKeyZ)) {
         co = sfImage_getPixel(res->wa, res->pos.x, res->pos.y - res->ti);
         ci = sfImage_getPixel(res->wa, res->pos.x + 14.4,
         res->pos.y - res->ti);
@@ -43,19 +43,19 @@ int y_movement(game_ressources *res)
 int x_movements(game_ressources *res)
 {
     sfColor co, ci;
-    if (sfKeyboard_isKeyPressed(sfKeyRight)) {
+    if (sfKeyboard_isKeyPressed(sfKeyD)) {
         co = sfImage_getPixel(res->wa, res->pos.x + 16 + res->ti, res->pos.y);
         ci = sfImage_getPixel(res->wa, res->pos.x + 16 + res->ti,
-        res->pos.y + 14.4);
+        res->pos.y + 18);
         if (co.g != 255 && ci.g != 255) {
             res->movement.x += res->ti, res->pos.x += res->ti, res->d_opt = -1;
             res->textureRect.left = change_sprite(res->counter, 77, 96);
         }
     }
-    if (sfKeyboard_isKeyPressed(sfKeyLeft)) {
+    if (sfKeyboard_isKeyPressed(sfKeyQ)) {
         co = sfImage_getPixel(res->wa, res->pos.x - res->ti - 3, res->pos.y);
         ci = sfImage_getPixel(res->wa, res->pos.x - res->ti - 3,
-        res->pos.y + 14.4);
+        res->pos.y + 18);
         if (co.g != 255 && ci.g != 255) {
             res->movement.x -= res->ti, res->pos.x -= res->ti, res->d_opt = -1;
             res->textureRect.left = change_sprite(res->counter, 115, 134);
@@ -86,7 +86,8 @@ int check_fight(game_ressources *ress)
 {
     sfColor temp;
     temp = sfImage_getPixel(ress->wa, ress->pos.x + 8, ress->pos.y + 8);
-    if (temp.g == 4 && temp.b == 100)
-        return 1;
+    if (temp.g == 4 && temp.b == 100 && ress->is_dragon == 0)
+        if (ress->has_sword == 1)
+            return 1;
     return 0;
 }

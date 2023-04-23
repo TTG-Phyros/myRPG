@@ -24,12 +24,24 @@ window *create_window(int width, int height, char *title, int framerate)
     return new_window;
 }
 
-void check_event(window *my_win, sfEvent event, button_group *group)
+void check_event(window *my_win, sfEvent event, button_group *group,
+                sfView *view)
 {
     if (event.type == sfEvtClosed)
         sfRenderWindow_close(my_win->win);
     if (event.type == sfEvtResized)
         fix_resize(group, my_win);
+    if (event.type == sfEvtMouseWheelMoved) {
+        int scroll = 0;
+        if (event.mouseWheel.delta < 0) {
+            scroll = event.mouseWheel.delta;
+            sfView_zoom(view, 2.f);
+        }
+        if (event.mouseWheel.delta > 0) {
+            scroll = event.mouseWheel.delta;
+            sfView_zoom(view, 0.5f);
+        }
+    }
 }
 
 sfSprite *set_sprite(char *filepath, float pos[2][2])
@@ -48,22 +60,22 @@ sfSprite *set_sprite(char *filepath, float pos[2][2])
 int main_menu(window *my_win)
 {
     sfEvent event;
-    int temp = 0;
     float pos_scale_back[2][2] = {{0, 0}, {1, 1}};
     sfSprite *main_back = set_sprite(back_main, pos_scale_back);
-    //sfText *main_title = main_text(my_win);
+    sfText *main_title = main_text(my_win);
+    sfClock *delay = sfClock_create();
     button_group *main_group = set_main_button_group(my_win);
-    while (sfRenderWindow_isOpen(my_win->win)) {
+    for (int temp = 0; sfRenderWindow_isOpen(my_win->win); ) {
         while (sfRenderWindow_pollEvent(my_win->win, &event))
-            check_event(my_win, event, main_group);
-        if (sfKeyboard_isKeyPressed(sfKeyEscape)) return 0;
+            check_event(my_win, event, main_group, NULL);
         if ((temp = redirect_main_check(main_group, my_win)) != -1)
             return redirect_main_check_sec(temp, my_win);
-        check_hover_and_click(main_group, my_win);
+        if (sfTime_asSeconds(sfClock_getElapsedTime(delay)) > 1)
+            check_hover_and_click(main_group, my_win);
         sfRenderWindow_clear(my_win->win, sfBlack);
         sfRenderWindow_drawSprite(my_win->win, main_back, NULL);
         draw_button_group(main_group, my_win);
-        //sfRenderWindow_drawText(my_win->win, main_title, NULL);
+        sfRenderWindow_drawText(my_win->win, main_title, NULL);
         sfRenderWindow_display(my_win->win);
     }
     return 0;

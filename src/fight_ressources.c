@@ -25,47 +25,55 @@ sfSprite *set_sprite_ss(char *filepath, float pos[2][2], float ss_pos[2][2])
     return sprite;
 }
 
-void more_load_fight_ress(fight_ressources *ress)
+void more_load_fight_ress(fight_ressources *res, window *w)
 {
-    float ps_hearts_tw[2][2] = {{150, 10}, {10, 10}};
+    float ps_hearts[2][2] = {{w->width / 192, w->height / 108},
+    {w->height / 108, w->height / 108}};
+    float ps_hearts_ss[2][2] = {{153, 1}, {15, 15}};
+    res->heart_o = set_sprite_ss(sprite_sheet, ps_hearts, ps_hearts_ss);
+    float ps_hearts_m[2][2] = {{w->width / 1.143, w->height / 108},
+    {w->height / 67.5, w->height / 67.5}};
+    float ps_hearts_m_ss[2][2] = {{153, 1}, {15, 15}};
+    res->hearts_m = set_sprite_ss(sprite_sheet, ps_hearts_m, ps_hearts_m_ss);
+    float ps_hearts_tw[2][2] = {{w->width / 12.8, w->height / 108},
+    {w->height / 108, w->height / 108}};
     float ps_hearts_ss_tw[2][2] = {{153, 1}, {15, 15}};
-    ress->heart_tw = set_sprite_ss(sprite_sheet, ps_hearts_tw, ps_hearts_ss_tw);
-    float ps_hearts_tr[2][2] = {{290, 10}, {10, 10}};
+    res->heart_tw = set_sprite_ss(sprite_sheet, ps_hearts_tw, ps_hearts_ss_tw);
+    float ps_hearts_tr[2][2] = {{w->width / 6.6, w->height / 108},
+    {w->height / 108, w->height / 108}};
     float ps_hearts_ss_tr[2][2] = {{153, 1}, {15, 15}};
-    ress->heart_tr = set_sprite_ss(sprite_sheet, ps_hearts_tr, ps_hearts_ss_tr);
-    ress->auto_damage = sfClock_create();
-    ress->cooldown = sfClock_create();
-    ress->direction = sfFalse;
-    sfVector2f pos = {1745, 65};
-    ress->m_life = hp_monster_text(pos);
-    ress->hp_monster = 70, ress->hp_player = 3;
+    res->heart_tr = set_sprite_ss(sprite_sheet, ps_hearts_tr, ps_hearts_ss_tr);
+    res->auto_damage = sfClock_create(), res->cooldown = sfClock_create();
+    res->direction = sfFalse, res->hp_monster = 70, res->hp_player = 3;
+    sfVector2f pos = {w->width / 1.1, w->height / 16.6};
+    res->m_life = hp_monster_text(pos, w->height / 12);
 }
 
-void load_fight_ressources(fight_ressources *ress)
+void load_fight_ressources(fight_ressources *ress, window *w)
 {
-    float pos_scale_back[2][2] = {{-10, -150}, {3, 3}};
-    ress->back = set_sprite(fight_back, pos_scale_back);
-    float pos_scale_bf[2][2] = {{1920 / 2 - 1090 / 2, 700}, {1, 1}};
+    float ps_back[2][2] = {{-(w->width / 192), -(w->height / 12.8)},
+    {w->height / 360, w->height / 360}};
+    ress->back = set_sprite(fight_back, ps_back);
+    float pos_scale_bf[2][2] = {{w->width / 4.6, w->height / 1.54},
+    {w->width / (double)1920, w->height / (double)1080}};
     ress->back_f = set_sprite(bcfight, pos_scale_bf);
-    float ps_sword[2][2] = {{430, 820}, {11, 11}};
+    float ps_sword[2][2] = {{w->width / 4.5, w->height / 1.3},
+    {w->height / 98.2, w->height / 98.2}};
     float ps_sword_ss[2][2] = {{238, 1}, {8, 16}};
     ress->sword = set_sprite_ss(sprite_sheet, ps_sword, ps_sword_ss);
-    float ps_monster[2][2] = {{1300, 250}, {14, 14}};
+    float ps_monster[2][2] = {{w->width / 1.5, w->height / 4.3},
+    {w->height / 77.1, w->height / 77.4}};
     float ps_monster_ss[2][2] = {{191, 1}, {33, 33}};
     ress->monster = set_sprite_ss(sprite_sheet, ps_monster, ps_monster_ss);
-    float ps_link[2][2] = {{370, 530}, {10, 10}};
+    float ps_link[2][2] = {{w->width / 5.1, w->height / 2},
+    {w->height / 108, w->height / 108}};
     float ps_link_ss[2][2] = {{77, 1}, {16, 16}};
     ress->link = set_sprite_ss(sprite_sheet, ps_link, ps_link_ss);
-    float ps_hearts[2][2] = {{10, 10}, {10, 10}};
-    float ps_hearts_ss[2][2] = {{153, 1}, {15, 15}};
-    ress->heart_o = set_sprite_ss(sprite_sheet, ps_hearts, ps_hearts_ss);
-    float ps_hearts_m[2][2] = {{1680, 10}, {16, 16}};
-    float ps_hearts_m_ss[2][2] = {{153, 1}, {15, 15}};
-    ress->hearts_m = set_sprite_ss(sprite_sheet, ps_hearts_m, ps_hearts_m_ss);
-    more_load_fight_ress(ress);
+    more_load_fight_ress(ress, w);
 }
 
-int clean_fight_ress(fight_ressources *ress, sfClock *disp, sfText *text)
+int clean_fight_ress(fight_ressources *ress, sfClock *disp,
+                    sfText *text, sfBool win)
 {
     sfSprite_destroy(ress->back);
     sfSprite_destroy(ress->back_f);
@@ -82,6 +90,7 @@ int clean_fight_ress(fight_ressources *ress, sfClock *disp, sfText *text)
     sfText_destroy(ress->m_life);
     sfText_destroy(text);
     free(ress);
+    return win;
 }
 
 int end_screen(sfBool win, window *w, fight_ressources *ress)
@@ -99,11 +108,11 @@ int end_screen(sfBool win, window *w, fight_ressources *ress)
     sfVector2f pos = {(w->width - r.width) / 2, (w->height - r.height) / 2};
     sfText_setPosition(text, pos);
     while (sfRenderWindow_isOpen(w->win)) {
-        if (sfTime_asSeconds(sfClock_getElapsedTime(disp)) >= 5) break;
+        if (sfTime_asSeconds(sfClock_getElapsedTime(disp)) >= 3) break;
         sfRenderWindow_clear(w->win, sfBlack);
         sfRenderWindow_drawText(w->win, text, NULL);
         sfRenderWindow_display(w->win);
     }
     sfFont_destroy(font);
-    return clean_fight_ress(ress, disp, text);
+    return clean_fight_ress(ress, disp, text, win);
 }
