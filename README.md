@@ -79,5 +79,5 @@ L'arbre de progression permet de personnaliser le gameplay pour s'adapter aux di
 
 ## Auteur
 
-| [<img src="https://github.com/BaptisteMERY.png?size=85" width=85><br><sub>Nattan Cochet</sub>](https://github.com/BaptisteMERY) | [<img src="https://github.com/TTG-Phyros.png?size=85" width=85><br><sub>Nicolas Audibert</sub>](https://github.com/TTG-Phyros) | [<img src="https://github.com/Mathiasbiss.png?size=85" width=85><br><sub>Nattan Cochet</sub>](https://github.com/Mathiasbiss)
+| [<img src="https://github.com/BaptisteMERY.png?size=85" width=85><br><sub>Baptiste Mery</sub>](https://github.com/BaptisteMERY) | [<img src="https://github.com/TTG-Phyros.png?size=85" width=85><br><sub>Nicolas Audibert</sub>](https://github.com/TTG-Phyros) | [<img src="https://github.com/Mathiasbiss.png?size=85" width=85><br><sub>Mathias Bissière</sub>](https://github.com/Mathiasbiss)
 | :---: | :---: | :---: |
