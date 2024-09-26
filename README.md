@@ -59,11 +59,11 @@ L'arbre de progression permet de personnaliser le gameplay pour s'adapter aux di
 
 ### Clone le dépôt :
 
-    git clone https://github.com/ton-compte/MyNavy.git
+    git clone https://github.com/ton-compte/myRPG.git
 
 ### Accède au dossier du projet :
 
-    cd MyNavy
+    cd myRPG
 
 ### Compile le projet :
 
@@ -76,3 +76,8 @@ L'arbre de progression permet de personnaliser le gameplay pour s'adapter aux di
 ### Pour Nettoyer les fichiers :
 
     make fclean
+
+## Auteur
+
+| [<img src="https://github.com/BaptisteMERY.png?size=85" width=85><br><sub>Nattan Cochet</sub>](https://github.com/BaptisteMERY) | [<img src="https://github.com/TTG-Phyros.png?size=85" width=85><br><sub>Nicolas Audibert</sub>](https://github.com/TTG-Phyros) | [<img src="https://github.com/Mathiasbiss.png?size=85" width=85><br><sub>Nattan Cochet</sub>](https://github.com/Mathiasbiss)
+| :---: | :---: | :---: |
